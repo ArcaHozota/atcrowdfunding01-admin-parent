@@ -7,6 +7,10 @@ import com.atdaiwa.crowd.entity.Auth;
 
 public interface AuthService {
 
+	/**
+	 * 獲取所有權限
+	 * @return List<Auth>
+	 */
 	List<Auth> getAll();
 
 	List<Integer> getAssignedAuthIdByRoleId(Integer roleId);
