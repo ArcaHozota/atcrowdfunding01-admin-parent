@@ -6,11 +6,31 @@ import com.atdaiwa.crowd.entity.Menu;
 
 public interface MenuService {
 
-	List<Menu> getAll();
+    /**
+     * 獲取菜單列表；
+     *
+     * @return List<Menu>
+     */
+    List<Menu> getAll();
 
-	void save(Menu menu);
+    /**
+     * 保存菜單信息；
+     *
+     * @param menu 菜單對象；
+     */
+    void save(Menu menu);
 
-	void update(Menu menu);
+    /**
+     * 更新菜單信息；
+     *
+     * @param menu 菜單對象；
+     */
+    void update(Menu menu);
 
-	void remove(Integer id);
+    /**
+     * 刪除菜單；
+     *
+     * @param id 菜單ID；
+     */
+    void remove(Integer id);
 }
