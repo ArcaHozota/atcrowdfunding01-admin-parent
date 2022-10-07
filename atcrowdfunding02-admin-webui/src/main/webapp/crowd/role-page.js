@@ -84,7 +84,7 @@ function generatePage() {
 
 // 遠程訪問服務器獲取pageInfo數據
 function getPageInfoRemote() {
-    // 调用$.ajax()函数发送请求并接受$.ajax()函数的返回值
+    // 調用$.ajax()函數發送請求並接受$.ajax()函數的返回值
     var ajaxResult = $.ajax({
         "url": "role/get/page/info.json",
         "type": "post",
@@ -97,23 +97,23 @@ function getPageInfoRemote() {
         "dataType": "json"
     });
     console.log(ajaxResult);
-    // 判断当前响应状态码是否为200
+    // 判斷當前響應狀態碼是否為200
     var statusCode = ajaxResult.status;
-    // 如果当前响应状态码不是200，说明发生了错误或其他意外情况，显示提示消息，让当前函数停止执行
+    // 如果當前響應狀態碼不是200，說明發生了錯誤或其他意外情况，顯示提示消息，讓當前函數停止執行
     if (statusCode != 200) {
         layer.msg("失败！响应状态码=" + statusCode + " 说明信息=" + ajaxResult.statusText);
         return null;
     }
-    // 如果响应状态码是200，说明请求处理成功，获取pageInfo
+    // 如果響應狀態碼是200，說明請求成功，獲取pageInfo對象
     var resultEntity = ajaxResult.responseJSON;
-    // 从resultEntity 中获取result 属性
+    // 從resultEntity中獲取result屬性
     var result = resultEntity.result;
-    // 判断result 是否成功
+    // 判斷result是否成功
     if (result == "FAILED") {
         layer.msg(resultEntity.message);
         return null;
     }
-    // 确认result 为成功后获取pageInfo
+    // 確認result成功後獲取pageInfo對象
     var pageInfo = resultEntity.data;
     // 返回pageInfo
     return pageInfo;
@@ -121,16 +121,16 @@ function getPageInfoRemote() {
 
 // 填充表格
 function fillTableBody(pageInfo) {
-    // 清除tbody 中的旧的内容
+    // 清除tbody中的舊內容
     $("#rolePageBody").empty();
-    // 这里清空是为了让没有搜索结果时不显示页码导航条
+    // 這裡清空是為了讓無檢索結果時不顯示導航條
     $("#Pagination").empty();
-    // 判断pageInfo 对象是否有效
+    // 判斷pageInfo對象是否有效
     if (pageInfo == null || pageInfo == undefined || pageInfo.list == null || pageInfo.list.length == 0) {
         $("#rolePageBody").append("<tr><td colspan='4' align='center'>抱歉，沒有檢索到您所需的數據！</td></tr>");
         return null;
     }
-    // 使用pageInfo 的list 属性填充tbody
+    // 使用pageInfo的list屬性填充tbody
     for (var i = 0; i < pageInfo.list.length; i++) {
         var role = pageInfo.list[i];
         var roleId = role.id;
@@ -145,15 +145,15 @@ function fillTableBody(pageInfo) {
         var tr = "<tr>" + numberTd + checkboxTd + roleNameTd + buttonTd + "</tr>";
         $("#rolePageBody").append(tr);
     }
-    // 生成分页导航条
+    // 生成分頁導航條
     generateNavigator(pageInfo);
 }
 
-// 生成分页页码导航条
+// 生成分頁頁碼導航條
 function generateNavigator(pageInfo) {
-    // 获取总记录数
+    // 獲取總記錄數
     var totalRecord = pageInfo.total;
-    // 声明相关属性
+    // 聲明相關屬性
     var properties = {
         "num_edge_entries": 1,
         "num_display_entries": 3,
@@ -161,7 +161,7 @@ function generateNavigator(pageInfo) {
         "items_per_page": pageInfo.pageSize,
         "current_page": pageInfo.pageNum - 1
     };
-    // 调用pagination()函数
+    // 調用pagination()函數
     $("#Pagination").pagination(totalRecord, properties);
 }
 
