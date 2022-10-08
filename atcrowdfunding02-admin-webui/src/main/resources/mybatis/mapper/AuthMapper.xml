@@ -95,8 +95,8 @@
         from inner_role_auth
         where role_id = #{roleId}
     </select>
-    <select id="selectAssignedAuthNameByAdminId" resultType="String">
-        select name
+    <select id="selectAssignedAuthNameByAdminId" resultType="string">
+        select distinct name
         from tbl_auth
         where id in (select auth_id
                      from inner_role_auth
@@ -104,6 +104,7 @@
                                        from inner_admin_role
                                        where admin_id =
                                              #{adminId}))
+          and name != "" and name is not null
     </select>
     <select id="selectByExample"
             parameterType="com.atdaiwa.crowd.entity.AuthExample"

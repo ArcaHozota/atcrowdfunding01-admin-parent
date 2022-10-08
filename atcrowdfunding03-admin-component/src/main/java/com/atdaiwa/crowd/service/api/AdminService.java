@@ -20,6 +20,14 @@ public interface AdminService {
      * @return List<Admin>
      */
     List<Admin> getAll();
+    
+    /**
+     * 根據登錄賬戶查找用戶信息；
+     *
+     * @param loginAccount 用戶賬號；
+     * @return Admin對象
+     */
+    Admin getAdminByLoginAccount(String loginAccount);
 
     /**
      * 根據登錄賬戶查找用戶信息；
