@@ -28,4 +28,12 @@ public interface AuthService {
      * @param map 集合；
      */
     void saveRoleAuthRelationship(Map<String, List<Integer>> map);
+    
+    /**
+     * 通過カスタマー查找已被賦予的權限信息；
+     *
+     * @param adminId カスタマーID；
+     * @return List<String>
+     */
+    List<String> getAssignedAuthNameByAdminId(Integer adminId);
 }
