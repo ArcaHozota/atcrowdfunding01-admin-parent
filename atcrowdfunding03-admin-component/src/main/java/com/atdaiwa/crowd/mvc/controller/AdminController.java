@@ -26,24 +26,6 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 
-	@RequestMapping("/admin/do/logout.html")
-	public String doLogout(HttpSession session) {
-		// 1.強制session失效；
-		session.invalidate();
-		// 2.退出登錄，返回登錄畫面；
-		return "redirect:/admin/to/login/page.html";
-	}
-
-	@RequestMapping("/admin/do/login.html")
-	public String doLogin(@RequestParam("loginAccount") String loginAccount,
-			@RequestParam("userPassword") String userPassword, HttpSession session) {
-		// 1.調用Service方法進行登錄檢查；
-		Admin admin = adminService.getAdminByLoginAccount(loginAccount, userPassword);
-		// 2.將登錄成功返回的Admin對象傳入session域中；
-		session.setAttribute(CrowdConstants.ATTR_NAME_LOGIN_ADMIN, admin);
-		return "redirect:/admin/to/main/page.html";
-	}
-
 	@RequestMapping("/admin/get/page.html")
 	public String getPageInfo(@RequestParam(value = "keyword", defaultValue = "") String keyword,
 			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
@@ -87,4 +69,22 @@ public class AdminController {
 		// 2.頁面跳轉；
 		return "redirect:/admin/get/page.html?pageNum=" + pageNum + "&keyword=" + keyword;
 	}
+
+//	@RequestMapping("/admin/do/logout.html")
+//	public String doLogout(HttpSession session) {
+//		// 1.強制session失效；
+//		session.invalidate();
+//		// 2.退出登錄，返回登錄畫面；
+//		return "redirect:/admin/to/login/page.html";
+//	}
+
+//	@RequestMapping("/admin/do/login.html")
+//	public String doLogin(@RequestParam("loginAccount") String loginAccount,
+//			@RequestParam("userPassword") String userPassword, HttpSession session) {
+//		// 1.調用Service方法進行登錄檢查；
+//		Admin admin = adminService.getAdminByLoginAccount(loginAccount, userPassword);
+//		// 2.將登錄成功返回的Admin對象傳入session域中；
+//		session.setAttribute(CrowdConstants.ATTR_NAME_LOGIN_ADMIN, admin);
+//		return "redirect:/admin/to/main/page.html";
+//	}
 }

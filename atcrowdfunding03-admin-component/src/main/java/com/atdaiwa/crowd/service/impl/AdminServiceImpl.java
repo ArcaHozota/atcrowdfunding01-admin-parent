@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.atdaiwa.crowd.constant.CrowdConstants;
@@ -30,14 +31,16 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private AdminMapper adminMapper;
 
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+
 	private Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
 
 	@Override
 	public void saveAdmin(Admin admin) {
 		// 1.密碼加密；
 		String password = admin.getUserPassword();
-		password = CrowdUtil.toMD5(password);
-		admin.setUserPassword(password);
+		admin.setUserPassword(passwordEncoder.encode(password));
 		// 2.生成創建時間；
 		Date date = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

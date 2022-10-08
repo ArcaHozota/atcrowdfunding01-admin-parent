@@ -1,47 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
-    <!-- 配置自動掃描的包：為了把Service層掃描到IOC容器之中 -->
-    <context:component-scan
-            base-package="com.atdaiwa.crowd.service"/>
+	<!-- 配置自動掃描的包：為了把Service層掃描到IOC容器之中 -->
+	<context:component-scan
+		base-package="com.atdaiwa.crowd.service" />
 
-    <!-- 配置事務管理器 -->
-    <bean id="txManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <!-- 加載數據源 -->
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
+	<!-- 配置事務管理器 -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 加載數據源 -->
+		<property name="dataSource" ref="dataSource" />
+	</bean>
 
-    <!-- 配置事務切面 -->
-    <aop:config>
-        <!-- 為了將來整合SpringSecurity的需要，讓切入點表達式直接定位到ServiceImpl -->
-        <aop:pointcut
-                expression="execution(* *..*ServiceImpl.*(..))" id="txPointcut"/>
-        <!-- 將切入點表達式與事務通知關聯 -->
-        <aop:advisor advice-ref="txAdvisor" pointcut-ref="txPointcut"/>
-    </aop:config>
+	<!-- SpSecurity明文加密編碼器 -->
+	<bean id="passwordEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
-    <!-- 配置事務的通知管理器 -->
-    <tx:advice id="txAdvisor" transaction-manager="txManager">
-        <!-- 配置事務的屬性 -->
-        <tx:attributes>
-            <!-- 檢索方法：配置只讀屬性，讓數據庫識別其為檢索操作，能提高檢索效率； -->
-            <tx:method name="get*" read-only="true"/>
-            <tx:method name="find*" read-only="true"/>
-            <tx:method name="count*" read-only="true"/>
-            <tx:method name="query*" read-only="true"/>
-            <!-- 增刪改方法：配置事務的傳播行為以及回滾異常； -->
-            <tx:method name="save*" propagation="REQUIRES_NEW" rollback-for="java.lang.Exception"/>
-            <tx:method name="update*" propagation="REQUIRES_NEW" rollback-for="java.lang.Exception"/>
-            <tx:method name="remove*" propagation="REQUIRES_NEW" rollback-for="java.lang.Exception"/>
-            <tx:method name="batch*" propagation="REQUIRES_NEW" rollback-for="java.lang.Exception"/>
-        </tx:attributes>
-    </tx:advice>
+	<!-- 配置事務切面 -->
+	<aop:config>
+		<!-- 為了將來整合SpringSecurity的需要，讓切入點表達式直接定位到ServiceImpl -->
+		<aop:pointcut
+			expression="execution(* *..*ServiceImpl.*(..))" id="txPointcut" />
+		<!-- 將切入點表達式與事務通知關聯 -->
+		<aop:advisor advice-ref="txAdvisor"
+			pointcut-ref="txPointcut" />
+	</aop:config>
+
+	<!-- 配置事務的通知管理器 -->
+	<tx:advice id="txAdvisor" transaction-manager="txManager">
+		<!-- 配置事務的屬性 -->
+		<tx:attributes>
+			<!-- 檢索方法：配置只讀屬性，讓數據庫識別其為檢索操作，能提高檢索效率； -->
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="count*" read-only="true" />
+			<tx:method name="query*" read-only="true" />
+			<!-- 增刪改方法：配置事務的傳播行為以及回滾異常； -->
+			<tx:method name="save*" propagation="REQUIRES_NEW"
+				rollback-for="java.lang.Exception" />
+			<tx:method name="update*" propagation="REQUIRES_NEW"
+				rollback-for="java.lang.Exception" />
+			<tx:method name="remove*" propagation="REQUIRES_NEW"
+				rollback-for="java.lang.Exception" />
+			<tx:method name="batch*" propagation="REQUIRES_NEW"
+				rollback-for="java.lang.Exception" />
+		</tx:attributes>
+	</tx:advice>
 </beans>
