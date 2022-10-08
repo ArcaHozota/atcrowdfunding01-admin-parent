@@ -28,7 +28,7 @@
 		</div>
 	</nav>
 	<div class="container">
-		<form action="security/do/login.html" method="post" class="form-signin"
+		<form action="spsecurity/do/login.html" method="post" class="form-signin"
 			role="form">
 			<h2 class="form-signin-heading">
 				<i class="glyphicon glyphicon-log-in"></i>管理員登錄
