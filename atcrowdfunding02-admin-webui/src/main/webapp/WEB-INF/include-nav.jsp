@@ -16,7 +16,8 @@
 					<div class="btn-group">
 						<button type="button" class="btn btn-danger dropdown-toggle"
 							data-toggle="dropdown">
-							<i class="glyphicon glyphicon-user"></i>${sessionScope.loginAdmin.userName}
+							<i class="glyphicon glyphicon-user"></i>
+							<security:authentication property="principal.motoAdmin.userName"/>
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" role="menu">
