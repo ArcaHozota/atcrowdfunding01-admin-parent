@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +37,7 @@ public class AssignmentController {
 	@Autowired
 	private AuthService authService;
 
+	@PreAuthorize("hasRole('代表取締役社長')")
 	@RequestMapping("/assign/get/all/auth.json")
 	@ResponseBody
 	public ResultEntity<List<Auth>> getAllAuth() {
@@ -43,6 +45,7 @@ public class AssignmentController {
 		return ResultEntity.successWithData(authList);
 	}
 
+	@PreAuthorize("hasRole('代表取締役社長')")
 	@RequestMapping("/assign/get/assigned/auth/id/by/role/id.json")
 	@ResponseBody
 	public ResultEntity<List<Integer>> getAssignedAuthIdByRoleId(@RequestParam("roleId") Integer roleId) {
@@ -50,6 +53,7 @@ public class AssignmentController {
 		return ResultEntity.successWithData(authIdList);
 	}
 
+	@PreAuthorize("hasRole('代表取締役社長')")
 	@RequestMapping("/assign/to/assignment/role/page.html")
 	public String toAssignRolePage(@RequestParam("adminId") Integer adminId, ModelMap modelMap) {
 		// 1.查詢已分配角色；
@@ -62,6 +66,7 @@ public class AssignmentController {
 		return "assign-role";
 	}
 
+	@PreAuthorize("hasRole('代表取締役社長')")
 	@RequestMapping("/assign/do/role/assign.html")
 	public String saveAdminRole(@RequestParam("adminId") Integer adminId, @RequestParam("pageNum") Integer pageNum,
 			@RequestParam("keyword") String keyword,
@@ -70,6 +75,7 @@ public class AssignmentController {
 		return "redirect:/admin/get/page.html?pageNum=" + pageNum + "&keyword=" + keyword;
 	}
 
+	@PreAuthorize("hasRole('代表取締役社長')")
 	@RequestMapping("/assign/do/role/assign/auth.json")
 	@ResponseBody
 	public ResultEntity<List<Integer>> saveRoleAuthRelationship(@RequestBody Map<String,List<Integer>> map) {

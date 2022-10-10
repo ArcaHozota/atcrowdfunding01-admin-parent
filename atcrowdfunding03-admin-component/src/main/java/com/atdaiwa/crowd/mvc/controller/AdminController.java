@@ -47,7 +47,7 @@ public class AdminController {
 		return "redirect:/admin/get/page.html?pageNum=" + pageNum + "&keyword=" + keyword;
 	}
 
-	@PreAuthorize("hasAuthority('user:get')")
+	@PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
 	@RequestMapping("/admin/save.html")
 	public String save(Admin admin) {
 		// 1.執行保存；
@@ -56,7 +56,7 @@ public class AdminController {
 		return "redirect:/admin/get/page.html?pageNum=" + Integer.MAX_VALUE;
 	}
 
-	@PreAuthorize("hasAuthority('user:delete')")
+	@PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
 	@RequestMapping("/admin/to/edit/page.html")
 	public String toEditPage(@RequestParam("adminId") Integer adminId, ModelMap modelMap) {
 		Admin admin = adminService.getAdminById(adminId);
@@ -64,7 +64,7 @@ public class AdminController {
 		return "admin-edit";
 	}
 
-	@PreAuthorize("hasAuthority('user:delete')")
+	@PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
 	@RequestMapping("/admin/update.html")
 	public String update(Admin admin, @RequestParam("pageNum") Integer pageNum,
 			@RequestParam("keyword") String keyword) {
