@@ -3,6 +3,7 @@ package com.atdaiwa.crowd.mvc.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,7 @@ public class RoleController {
 	@Autowired
 	private RoleService roleService;
 
+	@PreAuthorize("hasAuthority('role:get')")
 	@RequestMapping("/role/get/page/info.json")
 	public ResultEntity<PageInfo<Role>> getPageInfo(
 			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
@@ -36,18 +38,21 @@ public class RoleController {
 		return ResultEntity.successWithData(pageInfo);
 	}
 
+	@PreAuthorize("hasAuthority('role:add')")
 	@RequestMapping("/role/save.json")
 	public ResultEntity<String> saveRole(Role role) {
 		roleService.saveRole(role);
 		return ResultEntity.successWithoutData();
 	}
 
+	@PreAuthorize("hasAuthority('role:delete')")
 	@RequestMapping("/role/update.json")
 	public ResultEntity<String> editRole(Role role) {
 		roleService.editRole(role);
 		return ResultEntity.successWithoutData();
 	}
 
+	@PreAuthorize("hasAuthority('role:delete')")
 	@RequestMapping("/role/remove/by/role/id/array.json")
 	public ResultEntity<String> removeByRoleIdArray(@RequestBody List<Integer> roleIdList) {
 		roleService.removeRole(roleIdList);

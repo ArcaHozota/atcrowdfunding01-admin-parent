@@ -1,6 +1,7 @@
 package com.atdaiwa.crowd.mvc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 
+	@PreAuthorize("hasAuthority('user:get')")
 	@RequestMapping("/admin/get/page.html")
 	public String getPageInfo(@RequestParam(value = "keyword", defaultValue = "") String keyword,
 			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
@@ -35,6 +37,7 @@ public class AdminController {
 		return "admin-page";
 	}
 
+	@PreAuthorize("hasAuthority('user:delete')")
 	@RequestMapping("/admin/remove/{adminId}/{pageNum}/{keyword}.html")
 	public String remove(@PathVariable("adminId") Integer adminId, @PathVariable("pageNum") Integer pageNum,
 			@PathVariable("keyword") String keyword) {
@@ -44,6 +47,7 @@ public class AdminController {
 		return "redirect:/admin/get/page.html?pageNum=" + pageNum + "&keyword=" + keyword;
 	}
 
+	@PreAuthorize("hasAuthority('user:get')")
 	@RequestMapping("/admin/save.html")
 	public String save(Admin admin) {
 		// 1.執行保存；
@@ -52,6 +56,7 @@ public class AdminController {
 		return "redirect:/admin/get/page.html?pageNum=" + Integer.MAX_VALUE;
 	}
 
+	@PreAuthorize("hasAuthority('user:delete')")
 	@RequestMapping("/admin/to/edit/page.html")
 	public String toEditPage(@RequestParam("adminId") Integer adminId, ModelMap modelMap) {
 		Admin admin = adminService.getAdminById(adminId);
@@ -59,6 +64,7 @@ public class AdminController {
 		return "admin-edit";
 	}
 
+	@PreAuthorize("hasAuthority('user:delete')")
 	@RequestMapping("/admin/update.html")
 	public String update(Admin admin, @RequestParam("pageNum") Integer pageNum,
 			@RequestParam("keyword") String keyword) {
