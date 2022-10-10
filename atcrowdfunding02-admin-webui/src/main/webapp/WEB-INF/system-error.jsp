@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/font-awesome.min.css">
 <link rel="stylesheet" href="css/login.css">
-<script type="text/javascript" src="jQuery/jQuery-3.6.0.js"></script>
+<script type="text/javascript" src="jQuery/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(function() {
