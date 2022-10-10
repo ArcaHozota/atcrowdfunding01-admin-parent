@@ -37,7 +37,7 @@ public class AdminController {
 		return "admin-page";
 	}
 
-	@PreAuthorize("hasAuthority('user:delete')")
+	@PreAuthorize("hasAuthority('user:delete') and hasRole('会長')")
 	@RequestMapping("/admin/remove/{adminId}/{pageNum}/{keyword}.html")
 	public String remove(@PathVariable("adminId") Integer adminId, @PathVariable("pageNum") Integer pageNum,
 			@PathVariable("keyword") String keyword) {

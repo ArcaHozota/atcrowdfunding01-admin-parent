@@ -22,7 +22,7 @@
 							<span class="text-muted">Something else</span>
 						</div>
 					</security:authorize>
-					<security:authorize access="hasRole('社長/本店長') or hasRole('代表取締役社長')">
+					<security:authorize access="hasAnyRole('社長/本店長','代表取締役社長')">
 						<div class="col-xs-6 col-sm-3 placeholder">
 							<img data-src="holder.js/200x200/auto/vine"
 								class="img-responsive" alt="Generic placeholder thumbnail">
@@ -30,7 +30,7 @@
 							<span class="text-muted">Something else</span>
 						</div>
 					</security:authorize>
-					<security:authorize access="hasRole('支店長') or hasRole('社長/本店長') or hasRole('代表取締役社長')">
+					<security:authorize access="hasAnyRole('支店長','社長/本店長','代表取締役社長')">
 						<div class="col-xs-6 col-sm-3 placeholder">
 							<img data-src="holder.js/200x200/auto/sky" class="img-responsive"
 								alt="Generic placeholder thumbnail">
@@ -38,7 +38,7 @@
 							<span class="text-muted">Something else</span>
 						</div>
 					</security:authorize>
-					<security:authorize access="hasRole('支店長') or hasRole('社長/本店長') or hasRole('代表取締役社長')">
+					<security:authorize access="hasAnyRole('支店長','社長/本店長','代表取締役社長')">
 						<div class="col-xs-6 col-sm-3 placeholder">
 							<img data-src="holder.js/200x200/auto/vine"
 								class="img-responsive" alt="Generic placeholder thumbnail">
