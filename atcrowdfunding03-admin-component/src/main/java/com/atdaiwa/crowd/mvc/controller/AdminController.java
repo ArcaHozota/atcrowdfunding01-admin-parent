@@ -11,6 +11,7 @@ import com.atdaiwa.crowd.constant.CrowdConstants;
 import com.atdaiwa.crowd.entity.Admin;
 import com.atdaiwa.crowd.service.api.AdminService;
 import com.github.pagehelper.PageInfo;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -22,55 +23,55 @@ import javax.annotation.Resource;
 @Controller
 public class AdminController {
 
-    @Resource
-    private AdminService adminService;
+	@Resource
+	private AdminService adminService;
 
-    @PreAuthorize("hasAuthority('user:get')")
-    @RequestMapping("/admin/get/page.html")
-    public String getPageInfo(@RequestParam(value = "keyword", defaultValue = "") String keyword,
-                              @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                              @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize, ModelMap modelMap) {
-        // 1.獲取PageInfo對象；
-        PageInfo<Admin> pageInfo = adminService.getPageInfo(keyword, pageNum, pageSize);
-        // 2.將PageInfo對象存入模型；
-        modelMap.addAttribute(CrowdConstants.ATTR_NAME_PAGE_INFO, pageInfo);
-        return "admin-page";
-    }
+	@PreAuthorize("hasAuthority('user:get')")
+	@RequestMapping("/admin/get/page.html")
+	public String getPageInfo(@RequestParam(value = "keyword", defaultValue = "") String keyword,
+			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+			@RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize, ModelMap modelMap) {
+		// 1.獲取PageInfo對象；
+		PageInfo<Admin> pageInfo = adminService.getPageInfo(keyword, pageNum, pageSize);
+		// 2.將PageInfo對象存入模型；
+		modelMap.addAttribute(CrowdConstants.ATTR_NAME_PAGE_INFO, pageInfo);
+		return "admin-page";
+	}
 
-    @PreAuthorize("hasAuthority('user:delete')")
-    @RequestMapping("/admin/remove/{adminId}/{pageNum}/{keyword}.html")
-    public String remove(@PathVariable("adminId") Integer adminId, @PathVariable("pageNum") Integer pageNum,
-                         @PathVariable("keyword") String keyword) {
-        // 1.執行刪除；
-        adminService.remove(adminId);
-        // 2.頁面跳轉；
-        return "redirect:/admin/get/page.html?pageNum=" + pageNum + "&keyword=" + keyword;
-    }
+	@PreAuthorize("hasAuthority('user:delete')")
+	@RequestMapping("/admin/remove/{adminId}/{pageNum}/{keyword}.html")
+	public String remove(@PathVariable("pageNum") Integer pageNum, @PathVariable("keyword") String keyword,
+			@PathVariable("adminId") List<Integer> adminIdList) {
+		// 1.執行刪除；
+		adminService.remove(adminIdList);
+		// 2.頁面跳轉；
+		return "redirect:/admin/get/page.html?pageNum=" + pageNum + "&keyword=" + keyword;
+	}
 
-    @PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
-    @RequestMapping("/admin/save.html")
-    public String save(Admin admin) {
-        // 1.執行保存；
-        adminService.saveAdmin(admin);
-        // 2.頁面跳轉；
-        return "redirect:/admin/get/page.html?pageNum=" + Integer.MAX_VALUE;
-    }
+	@PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
+	@RequestMapping("/admin/save.html")
+	public String save(Admin admin) {
+		// 1.執行保存；
+		adminService.saveAdmin(admin);
+		// 2.頁面跳轉；
+		return "redirect:/admin/get/page.html?pageNum=" + Integer.MAX_VALUE;
+	}
 
-    @PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
-    @RequestMapping("/admin/to/edit/page.html")
-    public String toEditPage(@RequestParam("adminId") Integer adminId, ModelMap modelMap) {
-        Admin admin = adminService.getAdminById(adminId);
-        modelMap.addAttribute("admin", admin);
-        return "admin-edit";
-    }
+	@PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
+	@RequestMapping("/admin/to/edit/page.html")
+	public String toEditPage(@RequestParam("adminId") Integer adminId, ModelMap modelMap) {
+		Admin admin = adminService.getAdminById(adminId);
+		modelMap.addAttribute("admin", admin);
+		return "admin-edit";
+	}
 
-    @PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
-    @RequestMapping("/admin/update.html")
-    public String update(Admin admin, @RequestParam("pageNum") Integer pageNum,
-                         @RequestParam("keyword") String keyword) {
-        // 1.執行更新；
-        adminService.update(admin);
-        // 2.頁面跳轉；
-        return "redirect:/admin/get/page.html?pageNum=" + pageNum + "&keyword=" + keyword;
-    }
+	@PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
+	@RequestMapping("/admin/update.html")
+	public String update(Admin admin, @RequestParam("pageNum") Integer pageNum,
+			@RequestParam("keyword") String keyword) {
+		// 1.執行更新；
+		adminService.update(admin);
+		// 2.頁面跳轉；
+		return "redirect:/admin/get/page.html?pageNum=" + pageNum + "&keyword=" + keyword;
+	}
 }

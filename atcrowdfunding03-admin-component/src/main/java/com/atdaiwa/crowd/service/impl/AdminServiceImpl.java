@@ -110,9 +110,15 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public void remove(Integer adminId) {
+	public void remove(List<Integer> adminIdList) {
 		// 1.根據主鍵刪除指定值；
-		adminMapper.deleteByPrimaryKey(adminId);
+		AdminExample example = new AdminExample();
+        // 2.生成查詢標準對象；
+        Criteria criteria = example.createCriteria();
+        // 3.插入刪除條件；
+        criteria.andIdIn(adminIdList);
+        // 4.執行刪除；
+        adminMapper.deleteByExample(example);
 	}
 
 	@Override

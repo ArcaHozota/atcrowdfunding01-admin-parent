@@ -54,9 +54,9 @@ public interface AdminService {
     /**
      * 刪除用戶信息；
      *
-     * @param adminId 用戶ID；
+     * @param adminIdList 用戶ID列表；
      */
-    void remove(Integer adminId);
+    void remove(List<Integer> adminIdList);
 
     /**
      * 通過id查找用戶信息；
