@@ -25,6 +25,8 @@ import com.atdaiwa.crowd.util.CrowdUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import javax.annotation.Resource;
+
 @Service
 public class AdminServiceImpl implements AdminService {
 

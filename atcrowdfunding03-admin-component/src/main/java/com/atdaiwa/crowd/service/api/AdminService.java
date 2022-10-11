@@ -5,6 +5,9 @@ import java.util.List;
 import com.atdaiwa.crowd.entity.Admin;
 import com.github.pagehelper.PageInfo;
 
+/**
+ * @author Administrator
+ */
 public interface AdminService {
 
     /**
