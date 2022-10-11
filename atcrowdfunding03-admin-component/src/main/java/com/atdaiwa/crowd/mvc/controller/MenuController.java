@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +13,8 @@ import com.atdaiwa.crowd.entity.Menu;
 import com.atdaiwa.crowd.service.api.MenuService;
 import com.atdaiwa.crowd.util.ResultEntity;
 
+import javax.annotation.Resource;
+
 /**
  * 菜單頁面控制器；
  *
@@ -22,7 +23,7 @@ import com.atdaiwa.crowd.util.ResultEntity;
 @RestController
 public class MenuController {
 
-    @Autowired
+    @Resource
     private MenuService menuService;
 
     @PreAuthorize("hasAnyRole('支店長','社長/本店長','代表取締役社長')")

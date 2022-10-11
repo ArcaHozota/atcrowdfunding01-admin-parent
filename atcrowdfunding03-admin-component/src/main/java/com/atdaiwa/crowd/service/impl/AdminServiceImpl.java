@@ -7,7 +7,6 @@ import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,13 +26,16 @@ import com.github.pagehelper.PageInfo;
 
 import javax.annotation.Resource;
 
+/**
+ * @author Administrator
+ */
 @Service
 public class AdminServiceImpl implements AdminService {
 
-	@Autowired
+	@Resource
 	private AdminMapper adminMapper;
 
-	@Autowired
+	@Resource
 	private BCryptPasswordEncoder passwordEncoder;
 
 	private Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);

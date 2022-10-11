@@ -2,11 +2,11 @@ package com.atdaiwa.crowd.mvc.config;
 
 import java.io.IOException;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,15 +20,18 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 
 import com.atdaiwa.crowd.constant.CrowdConstants;
 
+/**
+ * @author Administrator
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebAppSecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	@Autowired
+	@Resource
 	private UserDetailsService userDetailsService;
 	
-	@Autowired
+	@Resource
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@Override
@@ -54,8 +57,6 @@ public class WebAppSecurityConfig extends WebSecurityConfigurerAdapter {
 			.permitAll()
 			.antMatchers("/ztree/**")
 			.permitAll()
-//			.antMatchers("/admin/get/page.html")
-//			.hasRole("社長")
 			.anyRequest()
 			.authenticated()
 			.and().exceptionHandling()

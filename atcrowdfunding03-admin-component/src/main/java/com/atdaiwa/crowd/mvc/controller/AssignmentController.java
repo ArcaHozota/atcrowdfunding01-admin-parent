@@ -3,7 +3,6 @@ package com.atdaiwa.crowd.mvc.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,6 +18,8 @@ import com.atdaiwa.crowd.service.api.AuthService;
 import com.atdaiwa.crowd.service.api.RoleService;
 import com.atdaiwa.crowd.util.ResultEntity;
 
+import javax.annotation.Resource;
+
 /**
  * 權限分配功能控制器；
  * 
@@ -28,13 +29,13 @@ import com.atdaiwa.crowd.util.ResultEntity;
 @Controller
 public class AssignmentController {
 
-	@Autowired
+	@Resource
 	private AdminService adminService;
 
-	@Autowired
+	@Resource
 	private RoleService roleService;
 
-	@Autowired
+	@Resource
 	private AuthService authService;
 
 	@PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")

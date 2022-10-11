@@ -18,16 +18,18 @@ import com.atdaiwa.crowd.service.api.AdminService;
 import com.atdaiwa.crowd.service.api.AuthService;
 import com.atdaiwa.crowd.service.api.RoleService;
 
+import javax.annotation.Resource;
+
 @Component
 public class CrowdUserDetailsService implements UserDetailsService {
 
-	@Autowired
+	@Resource
 	private AdminService adminService;
 
-	@Autowired
+	@Resource
 	private AuthService authService;
 
-	@Autowired
+	@Resource
 	private RoleService roleService;
 
 	@Override

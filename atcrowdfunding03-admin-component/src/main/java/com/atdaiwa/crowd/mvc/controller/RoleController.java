@@ -2,7 +2,6 @@ package com.atdaiwa.crowd.mvc.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +13,8 @@ import com.atdaiwa.crowd.service.api.RoleService;
 import com.atdaiwa.crowd.util.ResultEntity;
 import com.github.pagehelper.PageInfo;
 
+import javax.annotation.Resource;
+
 /**
  * 角色分配頁面控制器；
  * 
@@ -23,7 +24,7 @@ import com.github.pagehelper.PageInfo;
 @RestController
 public class RoleController {
 
-	@Autowired
+	@Resource
 	private RoleService roleService;
 
 	@PreAuthorize("hasAuthority('role:get')")

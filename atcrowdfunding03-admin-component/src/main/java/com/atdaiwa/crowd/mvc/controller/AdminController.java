@@ -1,6 +1,5 @@
 package com.atdaiwa.crowd.mvc.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,6 +12,8 @@ import com.atdaiwa.crowd.entity.Admin;
 import com.atdaiwa.crowd.service.api.AdminService;
 import com.github.pagehelper.PageInfo;
 
+import javax.annotation.Resource;
+
 /**
  * 管理頁面控制器；
  *
@@ -21,7 +22,7 @@ import com.github.pagehelper.PageInfo;
 @Controller
 public class AdminController {
 
-    @Autowired
+    @Resource
     private AdminService adminService;
 
     @PreAuthorize("hasAuthority('user:get')")
