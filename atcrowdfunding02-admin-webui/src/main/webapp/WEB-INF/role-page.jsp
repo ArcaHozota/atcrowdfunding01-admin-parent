@@ -41,13 +41,13 @@
 				"success" : function(response) {
 					var result = response.result;
 					if (result === "SUCCESS") {
-						layer.msg("操作成功！");
+						layer.msg("Succeeded！");
 						//使用大數定位到末頁；
 						window.pageNum = 120000;
 						//重新加載分頁；
 						generatePage();
 					} else if (result === "FAILED") {
-						layer.msg("操作失敗！" + response.message);
+						layer.msg("Failed！" + response.message);
 					}
 				},
 				"error" : function(response) {
@@ -85,11 +85,11 @@
 				"success" : function(response) {
 					var result = response.result;
 					if (result === "SUCCESS") {
-						layer.msg("操作成功！");
+						layer.msg("Succeeded！");
 						//重新加載分頁；
 						generatePage();
 					} else if (result === "FAILED") {
-						layer.msg("操作失敗！" + response.message);
+						layer.msg("Failed！" + response.message);
 					}
 				},
 				"error" : function(response) {
@@ -111,13 +111,13 @@
 				"success" : function(response) {
 					var result = response.result;
 					if (result === "SUCCESS") {
-						layer.msg("操作成功！");
+						layer.msg("Succeeded！");
 						//重新加載分頁；
 						generatePage();
 						//取消全選框的選中狀態；
 						$("#summaryBox").prop("checked", false);
 					} else if (result === "FAILED") {
-						layer.msg("操作失敗！" + response.message);
+						layer.msg("Failed！" + response.message);
 					}
 				},
 				"error" : function(response) {

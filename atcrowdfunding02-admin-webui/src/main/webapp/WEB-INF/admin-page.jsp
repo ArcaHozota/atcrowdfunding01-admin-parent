@@ -27,9 +27,10 @@
             //打開模態框；
             $("#editAdminModal").modal("show");
             //獲取表格中當前行的賬號信息；
-            let loginAcct = $(this).parent().prev().find("td:eq(2)").text();
-            let adminName = $(this).parent().prev().find("td:eq(3)").text();
-            let email = $(this).parent().prev().find("td:eq(4)").text();
+            let vals = $(this).parent().parent().find("td");
+            let loginAcct = vals.eq(2).text();
+            let adminName = vals.eq(3).text();
+            let email = vals.eq(4).text();
             //獲取當前角色的ID值；
             window.adminId = this.id;
             //使用adminName的值來設置模態框中的文本框；

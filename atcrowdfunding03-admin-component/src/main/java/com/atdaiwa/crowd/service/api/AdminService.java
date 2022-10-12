@@ -23,7 +23,7 @@ public interface AdminService {
      * @return List<Admin>
      */
     List<Admin> getAll();
-    
+
     /**
      * 根據登錄賬戶查找用戶信息；
      *
@@ -31,15 +31,6 @@ public interface AdminService {
      * @return Admin對象
      */
     Admin getAdminByLoginAccount(String loginAccount);
-
-    /**
-     * 根據登錄賬戶查找用戶信息；
-     *
-     * @param loginAccount 用戶賬號；
-     * @param userPassword 密碼；
-     * @return Admin對象
-     */
-    Admin getAdminByLoginAccount(String loginAccount, String userPassword);
 
     /**
      * 獲取已完成分頁用戶信息
