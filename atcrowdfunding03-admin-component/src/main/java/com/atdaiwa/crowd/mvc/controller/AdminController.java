@@ -1,6 +1,8 @@
 package com.atdaiwa.crowd.mvc.controller;
 
+import com.atdaiwa.crowd.constant.CrowdConstants;
 import com.atdaiwa.crowd.util.ResultEntity;
+import com.sun.istack.internal.NotNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,6 +10,7 @@ import com.atdaiwa.crowd.entity.Admin;
 import com.atdaiwa.crowd.service.api.AdminService;
 import com.github.pagehelper.PageInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -45,6 +48,12 @@ public class AdminController {
     @PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
     @RequestMapping("/admin/update.json")
     public ResultEntity<String> update(Admin admin) {
+        List<Admin> adminList = adminService.getAll();
+        List<String> acctLists = new ArrayList<>();
+        adminList.forEach(admins -> acctLists.add(admins.getLoginAccount()));
+        if (acctLists.contains(admin.getLoginAccount())) {
+            return ResultEntity.failed(CrowdConstants.MESSAGE_ACCOUNT_DUPLICATED);
+        }
         // 1.執行更新；
         adminService.update(admin);
         // 2.頁面跳轉；
@@ -53,28 +62,18 @@ public class AdminController {
 
     @PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
     @RequestMapping("/admin/save.json")
-    public ResultEntity<String> save(Admin admin) {
-        // 1.執行更新；
+    public ResultEntity<String> save(@NotNull Admin admin) {
+        List<Admin> adminList = adminService.getAll();
+        List<String> acctLists = new ArrayList<>();
+        adminList.forEach(admins -> acctLists.add(admins.getLoginAccount()));
+        if ("".equals(admin.getLoginAccount()) || "".equals(admin.getUserPassword())) {
+            return ResultEntity.failed(CrowdConstants.MESSAGE_STRING_INVALID);
+        } else if (acctLists.contains(admin.getLoginAccount())) {
+            return ResultEntity.failed(CrowdConstants.MESSAGE_ACCOUNT_DUPLICATED);
+        }
+        // 1.執行保存；
         adminService.saveAdmin(admin);
         // 2.頁面跳轉；
         return ResultEntity.successWithoutData();
     }
-
-//    @PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
-//    @RequestMapping("/admin/to/edit/page.html")
-//    public String toEditPage(@RequestParam("adminId") Integer adminId, ModelMap modelMap) {
-//        Admin admin = adminService.getAdminById(adminId);
-//        modelMap.addAttribute("admin", admin);
-//        return "admin-edit";
-//    }
-
-//    @PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
-//    @RequestMapping("/admin/update.html")
-//    public String update(Admin admin, @RequestParam("pageNum") Integer pageNum,
-//                         @RequestParam("keyword") String keyword) {
-//        // 1.執行更新；
-//        adminService.update(admin);
-//        // 2.頁面跳轉；
-//        return "redirect:/admin/get/page.html?pageNum=" + pageNum + "&keyword=" + keyword;
-//    }
 }

@@ -2,6 +2,7 @@ package com.atdaiwa.crowd.service.api;
 
 import java.util.List;
 
+import com.atdaiwa.crowd.entity.Admin;
 import com.atdaiwa.crowd.entity.Role;
 import com.github.pagehelper.PageInfo;
 
@@ -53,4 +54,12 @@ public interface RoleService {
      * @return List<Role>
      */
     List<Role> getUnassignedRole(Integer adminId);
+
+
+    /**
+     * 獲取所有角色信息；
+     *
+     * @return List<Role>
+     */
+    List<Role> getAll();
 }

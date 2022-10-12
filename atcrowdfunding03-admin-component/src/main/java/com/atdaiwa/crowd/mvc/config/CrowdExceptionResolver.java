@@ -18,6 +18,9 @@ import com.atdaiwa.crowd.util.CrowdUtil;
 import com.atdaiwa.crowd.util.ResultEntity;
 import com.google.gson.Gson;
 
+/**
+ * @author Administrator
+ */
 @ControllerAdvice
 public class CrowdExceptionResolver {
 

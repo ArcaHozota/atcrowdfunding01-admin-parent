@@ -22,7 +22,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		// 3.判斷取得的Admin對象是否為空；
 		if (admin == null) {
 			// 4.拋出異常；
-			throw new NotLoginException(CrowdConstants.MEASSAGE_ACCESS_PROHIBITED);
+			throw new NotLoginException(CrowdConstants.MESSAGE_ACCESS_PROHIBITED);
 		} else {
 			// 5.放行；
 			return true;

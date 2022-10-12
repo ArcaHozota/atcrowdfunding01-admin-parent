@@ -51,15 +51,7 @@ public class AdminServiceImpl implements AdminService {
         String createTime = dateFormat.format(date);
         admin.setCreateTime(createTime);
         // 3.執行保存操作；
-        try {
-            adminMapper.insert(admin);
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.info("異常全類名；" + e.getClass().getName());
-            if (e instanceof DuplicateKeyException) {
-                throw new AccountExistedException(CrowdConstants.MESSAGE_ACCOUNT_DUPLICATED);
-            }
-        }
+        adminMapper.insert(admin);
     }
 
     @Override
@@ -128,16 +120,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void update(Admin admin) {
-        // 1.執行更新操作；
-        try {
-            adminMapper.updateByPrimaryKeySelective(admin);
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.info("異常全類名；" + e.getClass().getName());
-            if (e instanceof DuplicateKeyException) {
-                throw new AcctExistedForUpdateException(CrowdConstants.MESSAGE_ACCOUNT_DUPLICATED);
-            }
-        }
+        adminMapper.updateByPrimaryKeySelective(admin);
     }
 
     @Override

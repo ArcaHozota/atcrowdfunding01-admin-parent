@@ -38,7 +38,7 @@
             $("#editAdminModal [name=email]").val(email);
         });
         // 5.給更新模態框中的更新按鈕綁定單擊響應函數；
-        $("#updateRoleBtn").click(function () {
+        $("#updateAdminBtn").click(function () {
             //從文本框獲取新的角色名稱；
             let loginAcct = $("#editAdminModal [name=loginAccount]").val();
             let adminName = $("#editAdminModal [name=userName]").val();
