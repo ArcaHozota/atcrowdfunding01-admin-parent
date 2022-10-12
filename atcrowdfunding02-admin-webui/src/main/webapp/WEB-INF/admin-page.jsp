@@ -6,36 +6,229 @@
 <%@ include file="/WEB-INF/include-head.jsp" %>
 <link rel="stylesheet" href="css/pagination.css">
 <script type="text/javascript" src="jQuery/jquery.pagination.js"></script>
+<script type="text/javascript" src="crowd/admin-page.js"></script>
 <script type="text/javascript">
-    $(function () {
-        initPagination();
+    $(function() {
+        // 1.為分頁操作準備初始化數據；
+        window.pageNum = 1;
+        window.pageSize = 7;
+        window.keyword = "";
+        // 2.調用分頁函數；
+        generatePage();
+        // // 3.給查詢按鈕綁定單擊響應函數；
+        // $("#searchBtn").click(function() {
+        //     //獲取輸入的屬性值賦予全局變量；
+        //     window.keyword = $("#keywordInput").val();
+        //     //調用分頁函數；
+        //     generatePage();
+        // });
+        // // 4.點擊新增按鈕打開模態框；
+        // $("#showAddModalBtn").click(function() {
+        //     $("#addRoleModal").modal("show");
+        // });
+        // // 5.給新增模態框中的儲存按鈕綁定單擊響應函數；
+        // $("#saveRoleBtn").click(function() {
+        //     var roleName = $.trim($("#addRoleModal [name=roleName]").val());
+        //     // AJAX請求；
+        //     $.ajax({
+        //         "url" : "role/save.json",
+        //         "type" : "POST",
+        //         "data" : {
+        //             "name" : roleName
+        //         },
+        //         "dataType" : "json",
+        //         "success" : function(response) {
+        //             var result = response.result;
+        //             if (result === "SUCCESS") {
+        //                 layer.msg("操作成功！");
+        //                 //使用大數定位到末頁；
+        //                 window.pageNum = 120000;
+        //                 //重新加載分頁；
+        //                 generatePage();
+        //             } else if (result === "FAILED") {
+        //                 layer.msg("操作失敗！" + response.message);
+        //             }
+        //         },
+        //         "error" : function(response) {
+        //             layer.msg(response.status + " " + response.statusText);
+        //         }
+        //     });
+        //     //關閉模態框；
+        //     $("#addRoleModal").modal("hide");
+        //     //清理輸入痕跡；
+        //     $("#addRoleModal [name=roleName]").val("");
+        // });
+        // 6.給頁面上的鉛筆圖標綁定單擊響應函數；
+        $("#rolePageBody").on("click", ".pencilBtn", function() {
+            //打開模態框；
+            $("#editRoleModal").modal("show");
+            //獲取表格中當前行的角色名稱；
+            var roleName = $(this).parent().prev().text();
+            //獲取當前角色的ID值；
+            window.roleId = this.id;
+            //使用roleName的值來設置模態框中的文本框；
+            $("#editRoleModal [name=roleName]").val(roleName);
+        });
+        // 7.給更新模態框中的更新按鈕綁定單擊響應函數；
+        $("#updateRoleBtn").click(function() {
+            //從文本框獲取新的角色名稱；
+            var roleName = $("#editRoleModal [name=roleName]").val();
+            $.ajax({
+                "url" : "role/update.json",
+                "type" : "POST",
+                "data" : {
+                    "id" : window.roleId,
+                    "name" : roleName
+                },
+                "dataType" : "json",
+                "success" : function(response) {
+                    var result = response.result;
+                    if (result === "SUCCESS") {
+                        layer.msg("操作成功！");
+                        //重新加載分頁；
+                        generatePage();
+                    } else if (result === "FAILED") {
+                        layer.msg("操作失敗！" + response.message);
+                    }
+                },
+                "error" : function(response) {
+                    layer.msg(response.status + " " + response.statusText);
+                }
+            });
+            //關閉模態框；
+            $("#editRoleModal").modal("hide");
+        });
+        // 8.給模態框中的刪除按鈕綁定單擊事件；
+        $("#removeRoleBtn").click(function() {
+            var requestBody = JSON.stringify(window.roleIdArray);
+            $.ajax({
+                "url" : "role/remove/by/role/id/array.json",
+                "type" : "POST",
+                "data" : requestBody,
+                "contentType" : "application/json;charset=UTF-8",
+                "dataType" : "JSON",
+                "success" : function(response) {
+                    var result = response.result;
+                    if (result === "SUCCESS") {
+                        layer.msg("操作成功！");
+                        //重新加載分頁；
+                        generatePage();
+                        //取消全選框的選中狀態；
+                        $("#summaryBox").prop("checked", false);
+                    } else if (result === "FAILED") {
+                        layer.msg("操作失敗！" + response.message);
+                    }
+                },
+                "error" : function(response) {
+                    layer.msg(response.status + " " + response.statusText);
+                }
+            });
+            //關閉模態框；
+            $("#confirmRoleModal").modal("hide");
+        });
+        // 9.給單個刪除按鈕綁定單擊響應函數；
+        $("#rolePageBody").on("click", ".removeBtn", function() {
+            //獲取表格中當前行的角色名稱；
+            var roleName = $(this).parent().prev().text();
+            //創建role對象存入數組；
+            var roleArray = [ {
+                id : this.id,
+                name : roleName
+            } ];
+            //打開模態框；
+            showConfirmModal(roleArray);
+        });
+        // 10.給全選框綁定單擊響應函數；
+        $("#summaryBox").click(function() {
+            //獲取當前全選框自身狀態；
+            var currentStatus = this.checked;
+            //用當前狀態設置其他的選擇框；
+            $(".itemBox").prop("checked", currentStatus);
+        });
+        // 11.全選，全不選的反向操作；
+        $("#rolePageBody").on("click", ".itemBox", function() {
+            //獲取當前已被選中的checkbox的數量；
+            var checkedBoxCount = $(".itemBox:checked").length;
+            //獲取全部checkBox的數量；
+            var totalBoxCount = $(".itemBox").length;
+            //使用兩者的比較結果設置全選框的狀態；
+            $("#summaryBox").prop("checked", checkedBoxCount == totalBoxCount);
+        });
+        // 12.給批量刪除按鈕綁定單擊響應函數；
+        $("#batchRemoveBtn").click(function() {
+            //定義role對象數組；
+            var roleArray = [];
+            //遍歷當前選中的多選框；
+            $(".itemBox:checked").each(function() {
+                //使用this來引用當前遍歷得到的多選框；
+                var roleId = this.id;
+                //通過DOM操作來獲取角色的名稱；
+                var roleName = $(this).parent().next().text();
+                roleArray.push({
+                    id : roleId,
+                    name : roleName
+                });
+            });
+            //檢查roleArray的長度是否為零；
+            if (roleArray.length == 0) {
+                layer.msg("請至少選擇一個項目！");
+                return null;
+            } else {
+                //調用函數，打開確認模態框；
+                showConfirmModal(roleArray);
+            }
+        });
+        // 13.給權限分配按鈕綁定單擊響應函數；
+        $("#rolePageBody").on("click", ".checkBtn", function() {
+            //把當前id存入全局變量；
+            window.roleId = this.id;
+            //打開模態框；
+            $("#assignRoleModal").modal("show");
+            //在模態框中加載權限的樹形結構；
+            fillAuthTree();
+        });
+        // 14.給權限分配按鈕綁定單擊響應函數；
+        $("#assignRoleBtn").click(function() {
+            //聲明一個數組，用來存放authId；
+            var authIdArray = [];
+            //獲取zTreeObj對象；
+            var zTreeObj = $.fn.zTree.getZTreeObj("authTreeDemo");
+            //獲取全部被勾選的節點；
+            var checkedNodes = zTreeObj.getCheckedNodes();
+            //遍歷checkedNodes；
+            for (var i = 0; i < checkedNodes.length; i++) {
+                var checkedNode = checkedNodes[i];
+                var authId = checkedNode.id;
+                authIdArray.push(authId);
+            }
+            //發送請求執行分配；
+            var requestBody = {
+                "authIdArray" : authIdArray,
+                "roleId" : [ window.roleId ]
+            };
+            requestBody = JSON.stringify(requestBody);
+            $.ajax({
+                "url" : "assign/do/role/assign/auth.json",
+                "type" : "POST",
+                "data" : requestBody,
+                "contentType" : "application/json;charset=UTF-8",
+                "dataType" : "JSON",
+                "success" : function(response) {
+                    var result = response.result;
+                    if (result == "SUCCESS") {
+                        layer.msg("操作成功！");
+                    } else {
+                        layer.msg("操作失敗！" + response.message);
+                    }
+                },
+                "error" : function(response) {
+                    layer.msg(response.status + " " + response.statusText);
+                }
+            });
+            //關閉模態框；
+            $("#assignRoleModal").modal("hide");
+        });
     });
-
-    //1.生成導航條；
-    function initPagination() {
-        //1.獲取總記錄數；
-        var totalRecord = ${requestScope.pageInfo.total};
-        //2.聲明一個JSON對象；
-        var properties = {
-            num_edge_entries: 1,
-            num_display_entries: 3,
-            callback: pageSelectCallBack,
-            items_per_page: ${requestScope.pageInfo.pageSize},
-            current_page: ${requestScope.pageInfo.pageNum -1}
-        };
-        //3.生成頁碼導航條；
-        $("#Pagination").pagination(totalRecord, properties);
-    }
-
-    //2.實現頁面跳轉；
-    function pageSelectCallBack(pageIndex, jQuery) {
-        //1.根據pageIndex計算得到pageNum；
-        var pageNum = pageIndex + 1;
-        //2.跳轉頁面；
-        window.location.href = "admin/get/page.html?pageNum=" + pageNum + "&keyword=${param.keyword}";
-        //3.取消超鏈接的默認行為；
-        return false;
-    }
 </script>
 <body>
 <%@ include file="/WEB-INF/include-nav.jsp" %>
@@ -83,36 +276,7 @@
                                 <th width="100">操作</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <c:if test="${empty requestScope.pageInfo.list}">
-                                <tr>
-                                    <td colspan="6" align="center">抱歉，沒有相應的結果。</td>
-                                </tr>
-                            </c:if>
-                            <c:if test="${!empty requestScope.pageInfo.list}">
-                                <c:forEach items="${requestScope.pageInfo.list}" var="admin"
-                                           varStatus="myStatus">
-                                    <tr>
-                                        <td>${myStatus.count}</td>
-                                        <td><input type="checkbox"></td>
-                                        <td>${admin.loginAccount}</td>
-                                        <td>${admin.userName}</td>
-                                        <td>${admin.email}</td>
-                                        <td>
-                                            <a href="assign/to/assignment/role/page.html?adminId=${admin.id}&pageNum=${requestScope.pageInfo.pageNum}&keyword=${param.keyword}"
-                                               class="btn btn-success btn-xs"><i class="glyphicon glyphicon-check"></i>
-                                            </a>
-                                            <a href="admin/to/edit/page.html?adminId=${admin.id}&pageNum=${requestScope.pageInfo.pageNum}&keyword=${param.keyword}"
-                                               class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-pencil"></i>
-                                            </a>
-                                            <a href="admin/remove/${admin.id}/${requestScope.pageInfo.pageNum}/${param.keyword}.html"
-                                               class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                            </c:if>
-                            </tbody>
+                            <tbody id="adminPageBody"></tbody>
                             <tfoot>
                             <tr>
                                 <td colspan="6" align="center">
@@ -127,5 +291,6 @@
         </div>
     </div>
 </div>
+<%@include file="/WEB-INF/modal-admin-confirm.jsp" %>
 </body>
 </html>

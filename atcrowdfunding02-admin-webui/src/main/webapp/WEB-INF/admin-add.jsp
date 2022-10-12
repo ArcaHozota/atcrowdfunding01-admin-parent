@@ -33,12 +33,12 @@
 							<div class="form-group">
 								<label for="exampleInputPassword1">密碼</label> <input
 									name="userPassword" type="text" class="form-control"
-									id="exampleInputPassword1" placeholder="請輸入密碼">
+									id="exampleInputPassword2" placeholder="請輸入密碼">
 							</div>
 							<div class="form-group">
 								<label for="exampleInputPassword1">用戶名</label> <input
 									name="userName" type="text" class="form-control"
-									id="exampleInputPassword1" placeholder="請輸入用戶名">
+									id="exampleInputPassword3" placeholder="請輸入用戶名">
 							</div>
 							<div class="form-group">
 								<label for="exampleInputEmail1">郵箱地址</label> <input type="email"
