@@ -66,4 +66,9 @@ public class RoleServiceImpl implements RoleService {
     public List<Role> getUnassignedRole(Integer adminId) {
         return roleMapper.selectUnassignedRole(adminId);
     }
+
+    @Override
+    public List<Role> getAll() {
+        return roleMapper.selectByExample(new RoleExample());
+    }
 }
