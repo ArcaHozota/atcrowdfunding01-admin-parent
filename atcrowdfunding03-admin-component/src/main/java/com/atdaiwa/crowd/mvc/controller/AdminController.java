@@ -2,12 +2,7 @@ package com.atdaiwa.crowd.mvc.controller;
 
 import com.atdaiwa.crowd.util.ResultEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.atdaiwa.crowd.entity.Admin;
 import com.atdaiwa.crowd.service.api.AdminService;
@@ -22,7 +17,7 @@ import javax.annotation.Resource;
  *
  * @author Administrator
  */
-@Controller
+@RestController
 public class AdminController {
 
     @Resource
@@ -48,29 +43,38 @@ public class AdminController {
     }
 
     @PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
-    @RequestMapping("/admin/save.html")
-    public String save(Admin admin) {
-        // 1.執行保存；
-        adminService.saveAdmin(admin);
-        // 2.頁面跳轉；
-        return "redirect:/admin/get/page.html?pageNum=" + Integer.MAX_VALUE;
-    }
-
-    @PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
-    @RequestMapping("/admin/to/edit/page.html")
-    public String toEditPage(@RequestParam("adminId") Integer adminId, ModelMap modelMap) {
-        Admin admin = adminService.getAdminById(adminId);
-        modelMap.addAttribute("admin", admin);
-        return "admin-edit";
-    }
-
-    @PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
-    @RequestMapping("/admin/update.html")
-    public String update(Admin admin, @RequestParam("pageNum") Integer pageNum,
-                         @RequestParam("keyword") String keyword) {
+    @RequestMapping("/admin/update.json")
+    public ResultEntity<String> update(Admin admin) {
         // 1.執行更新；
         adminService.update(admin);
         // 2.頁面跳轉；
-        return "redirect:/admin/get/page.html?pageNum=" + pageNum + "&keyword=" + keyword;
+        return ResultEntity.successWithoutData();
     }
+
+    @PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
+    @RequestMapping("/admin/save.json")
+    public ResultEntity<String> save(Admin admin) {
+        // 1.執行更新；
+        adminService.saveAdmin(admin);
+        // 2.頁面跳轉；
+        return ResultEntity.successWithoutData();
+    }
+
+//    @PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
+//    @RequestMapping("/admin/to/edit/page.html")
+//    public String toEditPage(@RequestParam("adminId") Integer adminId, ModelMap modelMap) {
+//        Admin admin = adminService.getAdminById(adminId);
+//        modelMap.addAttribute("admin", admin);
+//        return "admin-edit";
+//    }
+
+//    @PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
+//    @RequestMapping("/admin/update.html")
+//    public String update(Admin admin, @RequestParam("pageNum") Integer pageNum,
+//                         @RequestParam("keyword") String keyword) {
+//        // 1.執行更新；
+//        adminService.update(admin);
+//        // 2.頁面跳轉；
+//        return "redirect:/admin/get/page.html?pageNum=" + pageNum + "&keyword=" + keyword;
+//    }
 }

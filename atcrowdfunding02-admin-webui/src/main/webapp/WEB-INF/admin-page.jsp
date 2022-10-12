@@ -16,51 +16,104 @@
         // 2.調用分頁函數；
         generateAdminPages();
         // 3.給查詢按鈕綁定單擊響應函數；
-        $("#searchBtn").click(function() {
+        $("#searchBtn").click(function () {
             //獲取輸入的屬性值賦予全局變量；
             window.keyword = $("#keywordInput").val();
             //調用分頁函數；
             generateAdminPages();
         });
         // 4.給頁面上的鉛筆圖標綁定單擊響應函數；
-        $("#adminPageBody").on("click", ".pencilBtn", function() {
+        $("#adminPageBody").on("click", ".pencilBtn", function () {
             //打開模態框；
             $("#editAdminModal").modal("show");
-            //獲取表格中當前行的角色名稱；
-            var adminName = $(this).parent().prev().text();
+            //獲取表格中當前行的賬號信息；
+            let loginAcct = $(this).parent().prev().find("td:eq(2)").text();
+            let adminName = $(this).parent().prev().find("td:eq(3)").text();
+            let email = $(this).parent().prev().find("td:eq(4)").text();
             //獲取當前角色的ID值；
-            window.roleId = this.id;
-            //使用roleName的值來設置模態框中的文本框；
-            $("#editAdminModal [name=roleName]").val(adminName);
+            window.adminId = this.id;
+            //使用adminName的值來設置模態框中的文本框；
+            $("#editAdminModal [name=loginAccount]").val(loginAcct);
+            $("#editAdminModal [name=userName]").val(adminName);
+            $("#editAdminModal [name=email]").val(email);
         });
-        // 7.給更新模態框中的更新按鈕綁定單擊響應函數；
-        $("#updateRoleBtn").click(function() {
+        // 5.給更新模態框中的更新按鈕綁定單擊響應函數；
+        $("#updateRoleBtn").click(function () {
             //從文本框獲取新的角色名稱；
-            var roleName = $("#editRoleModal [name=roleName]").val();
+            let loginAcct = $("#editAdminModal [name=loginAccount]").val();
+            let adminName = $("#editAdminModal [name=userName]").val();
+            let email = $("#editAdminModal [name=email]").val();
             $.ajax({
-                "url" : "role/update.json",
-                "type" : "POST",
-                "data" : {
-                    "id" : window.roleId,
-                    "name" : roleName
+                "url": "admin/update.json",
+                "type": "POST",
+                "data": {
+                    "id": window.adminId,
+                    "loginAccount": loginAcct,
+                    "userName": adminName,
+                    "email": email
                 },
-                "dataType" : "json",
-                "success" : function(response) {
-                    var result = response.result;
+                "dataType": "json",
+                "success": function (response) {
+                    let result = response.result;
                     if (result === "SUCCESS") {
-                        layer.msg("操作成功！");
+                        layer.msg("Succeeded！");
                         //重新加載分頁；
-                        generatePage();
+                        generateAdminPages();
                     } else if (result === "FAILED") {
-                        layer.msg("操作失敗！" + response.message);
+                        layer.msg("Failed！" + response.message);
                     }
                 },
-                "error" : function(response) {
+                "error": function (response) {
                     layer.msg(response.status + " " + response.statusText);
                 }
             });
             //關閉模態框；
-            $("#editRoleModal").modal("hide");
+            $("#editAdminModal").modal("hide");
+        });
+        // 6.點擊新增按鈕打開模態框；
+        $("#showAddModalBtn").click(function () {
+            $("#saveAdminModal").modal("show");
+        });
+        // 7.給新增模態框中的儲存按鈕綁定單擊響應函數；
+        $("#saveAdminBtn").click(function () {
+            let loginAcct = $("#saveAdminModal [name=loginAccount]").val();
+            let adminName = $("#saveAdminModal [name=userName]").val();
+            let userPassword = $("#saveAdminModal [name=userPassword]").val();
+            let email = $("#saveAdminModal [name=email]").val();
+            // AJAX請求；
+            $.ajax({
+                "url": "admin/save.json",
+                "type": "POST",
+                "data": {
+                    "loginAccount": loginAcct,
+                    "userName": adminName,
+                    "userPassword": userPassword,
+                    "email": email
+                },
+                "dataType": "json",
+                "success": function (response) {
+                    let result = response.result;
+                    if (result === "SUCCESS") {
+                        layer.msg("Succeeded！");
+                        //使用大數定位到末頁；
+                        window.pageNum = 144000000;
+                        //重新加載分頁；
+                        generatePage();
+                    } else if (result === "FAILED") {
+                        layer.msg("Failed！" + response.message);
+                    }
+                },
+                "error": function (response) {
+                    layer.msg(response.status + " " + response.statusText);
+                }
+            });
+            //關閉模態框；
+            $("#saveAdminModal").modal("hide");
+            //清理輸入痕跡
+            $("#saveAdminModal [name=loginAccount]").val("");
+            $("#saveAdminModal [name=userName]").val("");
+            $("#saveAdminModal [name=userPassword]").val("");
+            $("#saveAdminModal [name=email]").val("");
         });
         // 8.給模態框中的刪除按鈕綁定單擊事件；
         $("#removeAdminBtn").click(function () {
@@ -76,7 +129,7 @@
                     if (result === "SUCCESS") {
                         layer.msg("Succeeded!");
                         //重新加載分頁；
-                        generatePage();
+                        generateAdminPages();
                         //取消全選框的選中狀態；
                         $("#summaryBox").prop("checked", false);
                     } else if (result === "FAILED") {
@@ -93,9 +146,9 @@
         // 9.給單個刪除按鈕綁定單擊響應函數；
         $("#adminPageBody").on("click", ".removeBtn", function () {
             //獲取表格中當前行的角色名稱；
-            var adminName = $(this).parent().prev().text();
+            let adminName = $(this).parent().prev().text();
             //創建admin對象存入數組；
-            var adminArray = [{
+            let adminArray = [{
                 id: this.id,
                 name: adminName
             }];
@@ -105,35 +158,35 @@
         // 10.給全選框綁定單擊響應函數；
         $("#summaryBox").click(function () {
             //獲取當前全選框自身狀態；
-            var currentStatus = this.checked;
+            let currentStatus = this.checked;
             //用當前狀態設置其他的選擇框；
             $(".itemBox").prop("checked", currentStatus);
         });
         // 11.全選，全不選的反向操作；
         $("#adminPageBody").on("click", ".itemBox", function () {
             //獲取當前已被選中的checkbox的數量；
-            var checkedBoxCount = $(".itemBox:checked").length;
+            let checkedBoxCount = $(".itemBox:checked").length;
             //獲取全部checkBox的數量；
-            var totalBoxCount = $(".itemBox").length;
+            let totalBoxCount = $(".itemBox").length;
             //使用兩者的比較結果設置全選框的狀態；
             $("#summaryBox").prop("checked", checkedBoxCount === totalBoxCount);
         });
         // 12.給批量刪除按鈕綁定單擊響應函數；
         $("#batchRemoveBtn").click(function () {
-            //定義role對象數組；
-            var adminArray = [];
+            //定義admin對象數組；
+            let adminArray = [];
             //遍歷當前選中的多選框；
             $(".itemBox:checked").each(function () {
                 //使用this來引用當前遍歷得到的多選框；
-                var adminId = this.id;
+                let adminId = this.id;
                 //通過DOM操作來獲取角色的名稱；
-                var adminName = $(this).parent().next().text();
-                roleArray.push({
+                let adminName = $(this).parent().next().text();
+                adminArray.push({
                     id: adminId,
                     name: adminName
                 });
             });
-            //檢查roleArray的長度是否為零；
+            //檢查adminArray的長度是否為零；
             if (adminArray.length === 0) {
                 layer.msg("請至少選擇一個賬號！");
                 return null;
@@ -142,56 +195,6 @@
                 showConfirmModal(adminArray);
             }
         });
-        // // 13.給權限分配按鈕綁定單擊響應函數；
-        // $("#rolePageBody").on("click", ".checkBtn", function() {
-        //     //把當前id存入全局變量；
-        //     window.roleId = this.id;
-        //     //打開模態框；
-        //     $("#assignRoleModal").modal("show");
-        //     //在模態框中加載權限的樹形結構；
-        //     fillAuthTree();
-        // });
-        // // 14.給權限分配按鈕綁定單擊響應函數；
-        // $("#assignRoleBtn").click(function() {
-        //     //聲明一個數組，用來存放authId；
-        //     var authIdArray = [];
-        //     //獲取zTreeObj對象；
-        //     var zTreeObj = $.fn.zTree.getZTreeObj("authTreeDemo");
-        //     //獲取全部被勾選的節點；
-        //     var checkedNodes = zTreeObj.getCheckedNodes();
-        //     //遍歷checkedNodes；
-        //     for (var i = 0; i < checkedNodes.length; i++) {
-        //         var checkedNode = checkedNodes[i];
-        //         var authId = checkedNode.id;
-        //         authIdArray.push(authId);
-        //     }
-        //     //發送請求執行分配；
-        //     var requestBody = {
-        //         "authIdArray" : authIdArray,
-        //         "roleId" : [ window.roleId ]
-        //     };
-        //     requestBody = JSON.stringify(requestBody);
-        //     $.ajax({
-        //         "url" : "assign/do/role/assign/auth.json",
-        //         "type" : "POST",
-        //         "data" : requestBody,
-        //         "contentType" : "application/json;charset=UTF-8",
-        //         "dataType" : "JSON",
-        //         "success" : function(response) {
-        //             var result = response.result;
-        //             if (result == "SUCCESS") {
-        //                 layer.msg("操作成功！");
-        //             } else {
-        //                 layer.msg("操作失敗！" + response.message);
-        //             }
-        //         },
-        //         "error" : function(response) {
-        //             layer.msg(response.status + " " + response.statusText);
-        //         }
-        //     });
-        //     //關閉模態框；
-        //     $("#assignRoleModal").modal("hide");
-        // });
     });
 </script>
 <body>
@@ -203,29 +206,30 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <i class="glyphicon glyphicon-th"></i> 數據列表
+                        <i class="glyphicon glyphicon-th"></i>データ一覧
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <form action="admin/get/page.html" method="post"
-                          class="form-inline" role="form" style="float: left;">
+                    <form class="form-inline" role="form" style="float: left;">
                         <div class="form-group has-feedback">
                             <div class="input-group">
-                                <div class="input-group-addon">檢索條件</div>
-                                <input name="keyword" class="form-control has-success"
-                                       type="text" placeholder="請輸入檢索條件">
+                                <div class="input-group-addon">検索条件</div>
+                                <input id="keywordInput" class="form-control has-success"
+                                       type="text" placeholder="検索条件を入力してください">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-info">
-                            <i class="glyphicon glyphicon-search"></i> 檢索
+                        <button id="searchBtn" type="button" class="btn btn-info">
+                            <i class="glyphicon glyphicon-search"></i>検索
                         </button>
                     </form>
                     <button id="batchRemoveBtn" type="button" class="btn btn-danger"
                             style="float: right; margin-left: 10px;">
-                        <i class=" glyphicon glyphicon-remove"></i> 刪除
+                        <i class=" glyphicon glyphicon-remove"></i>削除
                     </button>
-                    <a style="float: right;" href="admin/to/add/page.html"
-                       class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>新增</a>
+                    <button type="button" id="showAddModalBtn" class="btn btn-success"
+                            style="float: right;">
+                        <i class="glyphicon glyphicon-plus"></i>新增
+                    </button>
                     <br>
                     <hr style="clear: both;">
                     <div class="table-responsive">
@@ -256,5 +260,7 @@
     </div>
 </div>
 <%@include file="/WEB-INF/modal-admin-confirm.jsp" %>
+<%@include file="/WEB-INF/modal-admin-edit.jsp" %>
+<%@include file="/WEB-INF/modal-admin-save.jsp" %>
 </body>
 </html>
