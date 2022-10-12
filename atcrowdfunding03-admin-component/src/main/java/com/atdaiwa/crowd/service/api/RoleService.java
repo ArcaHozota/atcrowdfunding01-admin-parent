@@ -15,7 +15,7 @@ public interface RoleService {
      * @param keyword  關鍵字；
      * @return PageInfo<Role>
      */
-    PageInfo<Role> getPageInfo(Integer pageNum, Integer pageSize, String keyword);
+    PageInfo<Role> getPageInfo(String keyword, Integer pageNum, Integer pageSize);
 
     /**
      * 保存角色信息；

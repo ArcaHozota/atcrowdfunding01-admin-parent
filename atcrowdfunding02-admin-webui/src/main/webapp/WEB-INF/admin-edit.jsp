@@ -37,7 +37,7 @@
 							<div class="form-group">
 								<label for="exampleInputPassword1">用戶名</label> <input
 									name="userName" value="${requestScope.admin.userName}"
-									type="text" class="form-control" id="exampleInputPassword1"
+									type="text" class="form-control" id="exampleInputPassword2"
 									placeholder="請輸入用戶名">
 							</div>
 							<div class="form-group">

@@ -34,7 +34,7 @@ public class RoleController {
 			@RequestParam(value = "pageSize", defaultValue = "7") Integer pageSize,
 			@RequestParam(value = "keyword", defaultValue = "") String keyword) {
 		// 1.調用Service方法獲取分頁數據；
-		PageInfo<Role> pageInfo = roleService.getPageInfo(pageNum, pageSize, keyword);
+		PageInfo<Role> pageInfo = roleService.getPageInfo(keyword, pageNum, pageSize);
 		// 2.成功則返回JSON數據，失敗則會通過框架的異常處理機制；
 		return ResultEntity.successWithData(pageInfo);
 	}

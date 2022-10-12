@@ -4,17 +4,17 @@
 	<div class="tree">
 		<ul style="padding-left: 0px;" class="list-group">
 			<li class="list-group-item tree-closed"><a href="main.html"><i
-					class="glyphicon glyphicon-dashboard"></i>控制台</a></li>
+					class="glyphicon glyphicon-dashboard"></i>コントロールパネル</a></li>
 			<li class="list-group-item tree-closed"><span><i
-					class="glyphicon glyphicon glyphicon-tasks"></i>權限管理<span
+					class="glyphicon glyphicon glyphicon-tasks"></i>権限管理<span
 					class="badge" style="float: right">3</span></span>
 				<ul style="margin-top: 10px; display: none;">
 					<li style="height: 30px;"><a href="admin/get/page.html"><i
-							class="glyphicon glyphicon-user"></i>用戶維護</a></li>
+							class="glyphicon glyphicon-user"></i>ユーザー情報一覧</a></li>
 					<li style="height: 30px;"><a href="role/to/page.html"><i
-							class="glyphicon glyphicon-king"></i>角色維護</a></li>
+							class="glyphicon glyphicon-king"></i>ロール情報一覧</a></li>
 					<li style="height: 30px;"><a href="menu/to/page.html"><i
-							class="glyphicon glyphicon-lock"></i>菜單維護</a></li>
+							class="glyphicon glyphicon-lock"></i>オプション一覧</a></li>
 				</ul></li>
 			<li class="list-group-item tree-closed"><span><i
 					class="glyphicon glyphicon-ok"></i>業務審核<span class="badge"

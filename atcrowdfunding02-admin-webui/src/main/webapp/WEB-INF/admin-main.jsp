@@ -12,7 +12,7 @@
 		<div class="row">
 			<%@ include file="/WEB-INF/include-sidebar.jsp"%>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<h1 class="page-header">控制頁面</h1>
+				<h1 class="page-header">コントロールパネル</h1>
 				<div class="row placeholders">
 					<security:authorize access="hasRole('代表取締役社長')">
 						<div class="col-xs-6 col-sm-3 placeholder">

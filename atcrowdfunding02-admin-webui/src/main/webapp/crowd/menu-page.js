@@ -6,7 +6,7 @@ function generateTree() {
         "dataType": "JSON",
         "success": function (response) {
             var result = response.result;
-            if (result == "SUCCESS") {
+            if (result === "SUCCESS") {
                 // 2.創建JSON對象用於存儲zTree設置；
                 var setting = {
                     "view": {
@@ -23,7 +23,7 @@ function generateTree() {
                 var zNodes = response.data;
                 // 3.初始化樹形結構；
                 $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-            } else if (result == "FAILED") {
+            } else if (result === "FAILED") {
                 layer.msg(response.message);
             }
         }

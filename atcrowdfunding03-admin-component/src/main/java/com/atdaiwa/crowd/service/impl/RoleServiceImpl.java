@@ -24,7 +24,7 @@ public class RoleServiceImpl implements RoleService {
     private RoleMapper roleMapper;
 
     @Override
-    public PageInfo<Role> getPageInfo(Integer pageNum, Integer pageSize, String keyword) {
+    public PageInfo<Role> getPageInfo(String keyword, Integer pageNum, Integer pageSize) {
         // 1.開啟分頁功能；
         PageHelper.startPage(pageNum, pageSize);
         // 2.執行查詢；
