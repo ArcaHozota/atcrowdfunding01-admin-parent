@@ -8,12 +8,12 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title">尚籌網系統彈窗</h4>
+				<h4 class="modal-title">ヤマクラウドポップアップ</h4>
 			</div>
 			<form>
 				<div class="modal-body">
-					請輸入節點名稱：<input type="text" name="name"/><br/>
-					請輸入url地址：<input type="text" name="url"/><br/>
+					ノド名を入力してください：<input type="text" name="name"/><br/>
+					URLアドレスを入力してください：<input type="text" name="url"/><br/>
 					<i class="glyphicon glyphicon-th-list"></i>
 					<input type="radio" name="icon" value="glyphicon glyphicon-th-list" />&nbsp;
 					

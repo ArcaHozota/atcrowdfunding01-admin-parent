@@ -15,7 +15,7 @@ public interface AdminService {
      *
      * @param admin 用戶對象；
      */
-    void saveAdmin(Admin admin);
+    void save(Admin admin);
 
     /**
      * 獲取所有用戶信息；

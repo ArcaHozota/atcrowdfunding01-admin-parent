@@ -29,7 +29,7 @@ public class AdminServiceImpl implements AdminService {
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@Override
-	public void saveAdmin(Admin admin) {
+	public void save(Admin admin) {
 		// 1.密碼加密；
 		String password = admin.getUserPassword();
 		admin.setUserPassword(passwordEncoder.encode(password));

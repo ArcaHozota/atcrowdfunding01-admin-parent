@@ -8,13 +8,13 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title">尚籌網系統彈窗</h4>
+				<h4 class="modal-title">ヤマクラウドポップアップ</h4>
 			</div>
 			<div class="modal-body">
 				<ul id="authTreeDemo" class="ztree"></ul>
 			</div>
 			<div class="modal-footer">
-				<button id="assignRoleBtn" type="button" class="btn btn-warning">儲存設置</button>
+				<button id="assignRoleBtn" type="button" class="btn btn-warning">保存</button>
 			</div>
 		</div>
 	</div>

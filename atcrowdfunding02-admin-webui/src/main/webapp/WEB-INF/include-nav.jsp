@@ -7,7 +7,7 @@
 		<div class="navbar-header">
 			<div>
 				<a class="navbar-brand" style="font-size: 32px;"
-					href="admin/to/main/page.html">コントロールパネル</a>
+					href="admin/to/main/page.html">ホームページ</a>
 			</div>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">

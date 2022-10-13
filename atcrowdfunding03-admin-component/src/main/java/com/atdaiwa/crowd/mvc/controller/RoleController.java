@@ -34,7 +34,7 @@ public class RoleController {
 
 	@PostConstruct
 	private void initStaticService() {
-		staticRoleService = roleService;
+		staticRoleService = this.roleService;
 	}
 
 	private static boolean hasDuplicates(@NonNull Role role) {
@@ -51,7 +51,7 @@ public class RoleController {
 			@RequestParam(value = "pageSize", defaultValue = "7") Integer pageSize,
 			@RequestParam(value = "keyword", defaultValue = "") String keyword) {
 		// 1.調用Service方法獲取分頁數據；
-		PageInfo<Role> pageInfo = roleService.getPageInfo(keyword, pageNum, pageSize);
+		PageInfo<Role> pageInfo = staticRoleService.getPageInfo(keyword, pageNum, pageSize);
 		// 2.成功則返回JSON數據，失敗則會通過框架的異常處理機制；
 		return ResultEntity.successWithData(pageInfo);
 	}
@@ -64,7 +64,7 @@ public class RoleController {
 		} else if (hasDuplicates(role)) {
 			return ResultEntity.failed(CrowdConstants.MESSAGE_CHARACTER_DUPLICATED);
 		}
-		roleService.saveRole(role);
+		staticRoleService.saveRole(role);
 		return ResultEntity.successWithoutData();
 	}
 
@@ -74,14 +74,14 @@ public class RoleController {
 		if (hasDuplicates(role)) {
 			return ResultEntity.failed(CrowdConstants.MESSAGE_CHARACTER_DUPLICATED);
 		}
-		roleService.editRole(role);
+		staticRoleService.editRole(role);
 		return ResultEntity.successWithoutData();
 	}
 
 	@PreAuthorize("hasAuthority('role:delete')")
 	@RequestMapping("/role/remove/by/role/id/array.json")
 	public ResultEntity<String> removeByRoleIdArray(@RequestBody List<Integer> roleIdList) {
-		roleService.removeRole(roleIdList);
+		staticRoleService.removeRole(roleIdList);
 		return ResultEntity.successWithoutData();
 	}
 }

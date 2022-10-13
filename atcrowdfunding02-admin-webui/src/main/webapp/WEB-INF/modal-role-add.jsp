@@ -8,19 +8,19 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title">尚籌網系統彈窗</h4>
+				<h4 class="modal-title">ヤマクラウドポップアップ</h4>
 			</div>
 			<div class="modal-body">
 				<form class="form-group" role="form">
 					<div class="form-group has-success has-feedback">
 						<input 
 							type="text" name="roleName" class="form-control"
-							id="inputSuccess4" placeholder="請輸入角色名稱" autofocus>
+							id="inputSuccess4" placeholder="ロール名を入力してください。" autofocus>
 					</div>
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button id="saveRoleBtn" type="button" class="btn btn-primary">儲存</button>
+				<button id="saveRoleBtn" type="button" class="btn btn-primary">保存</button>
 			</div>
 		</div>
 	</div>

@@ -26,7 +26,7 @@ public class MenuController {
     @Resource
     private MenuService menuService;
 
-    @PreAuthorize("hasAnyRole('支店長','社長/本店長','代表取締役社長')")
+    @PreAuthorize("hasAnyRole('会長','本店長','代表取締役社長')")
     @RequestMapping("/menu/get/whole/tree.json")
     public ResultEntity<Menu> getWholeTree() {
         // 1.查詢全部的Menu對象；
@@ -60,21 +60,21 @@ public class MenuController {
         return ResultEntity.successWithData(root);
     }
 
-    @PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
+    @PreAuthorize("hasAnyRole('会長','代表取締役社長')")
     @RequestMapping("/menu/save.json")
     public ResultEntity<Menu> saveMenu(Menu menu) {
         menuService.save(menu);
         return ResultEntity.successWithoutData();
     }
 
-    @PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
+    @PreAuthorize("hasAnyRole('会長','代表取締役社長')")
     @RequestMapping("/menu/update.json")
     public ResultEntity<Menu> updateMenu(Menu menu) {
         menuService.update(menu);
         return ResultEntity.successWithoutData();
     }
 
-    @PreAuthorize("hasRole('代表取締役社長')")
+    @PreAuthorize("hasRole('会長')")
     @RequestMapping("/menu/remove.json")
     public ResultEntity<Menu> removeMenu(@RequestParam("id") Integer id) {
         menuService.remove(id);

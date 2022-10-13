@@ -47,7 +47,7 @@
 							class="glyphicon glyphicon-tags"></i>項目標籤</a></li>
 				</ul></li>
 			<li class="list-group-item tree-closed"><a href="param.html"><i
-					class="glyphicon glyphicon-list-alt"></i>參數管理</a></li>
+					class="glyphicon glyphicon-list-alt"></i>パラメータ管理</a></li>
 		</ul>
 	</div>
 </div>

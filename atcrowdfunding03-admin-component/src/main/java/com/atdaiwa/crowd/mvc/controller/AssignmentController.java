@@ -38,7 +38,7 @@ public class AssignmentController {
 	@Resource
 	private AuthService authService;
 
-	@PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
+	@PreAuthorize("hasAnyRole('会長','代表取締役社長')")
 	@RequestMapping("/assign/get/all/auth.json")
 	@ResponseBody
 	public ResultEntity<List<Auth>> getAllAuth() {
@@ -46,7 +46,7 @@ public class AssignmentController {
 		return ResultEntity.successWithData(authList);
 	}
 
-	@PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
+	@PreAuthorize("hasAnyRole('会長','代表取締役社長')")
 	@RequestMapping("/assign/get/assigned/auth/id/by/role/id.json")
 	@ResponseBody
 	public ResultEntity<List<Integer>> getAssignedAuthIdByRoleId(@RequestParam("roleId") Integer roleId) {
