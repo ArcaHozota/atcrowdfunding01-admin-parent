@@ -16,7 +16,6 @@ import com.atdaiwa.crowd.service.api.RoleService;
 import com.atdaiwa.crowd.util.ResultEntity;
 import com.github.pagehelper.PageInfo;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 /**
@@ -27,18 +26,11 @@ import javax.annotation.Resource;
 @RestController
 public class RoleController {
 
-	private static RoleService staticRoleService;
-
 	@Resource
 	private RoleService roleService;
 
-	@PostConstruct
-	private void initStaticService() {
-		staticRoleService = this.roleService;
-	}
-
-	private static boolean hasDuplicates(@NonNull Role role) {
-		List<Role> rolesList = staticRoleService.getAll();
+	private boolean hasDuplicates(@NonNull Role role) {
+		List<Role> rolesList = roleService.getAll();
 		List<String> roleList = new ArrayList<>();
 		rolesList.forEach(roles -> roleList.add(roles.getName()));
 		return roleList.contains(role.getName());
@@ -51,7 +43,7 @@ public class RoleController {
 			@RequestParam(value = "pageSize", defaultValue = "7") Integer pageSize,
 			@RequestParam(value = "keyword", defaultValue = "") String keyword) {
 		// 1.調用Service方法獲取分頁數據；
-		PageInfo<Role> pageInfo = staticRoleService.getPageInfo(keyword, pageNum, pageSize);
+		PageInfo<Role> pageInfo = roleService.getPageInfo(keyword, pageNum, pageSize);
 		// 2.成功則返回JSON數據，失敗則會通過框架的異常處理機制；
 		return ResultEntity.successWithData(pageInfo);
 	}
@@ -61,27 +53,29 @@ public class RoleController {
 	public ResultEntity<String> saveRole(@NonNull Role role) {
 		if ("".equals(role.getName())) {
 			return ResultEntity.failed(CrowdConstants.MESSAGE_STRING_INVALID);
-		} else if (hasDuplicates(role)) {
+		} else if (this.hasDuplicates(role)) {
 			return ResultEntity.failed(CrowdConstants.MESSAGE_CHARACTER_DUPLICATED);
 		}
-		staticRoleService.saveRole(role);
+		roleService.saveRole(role);
 		return ResultEntity.successWithoutData();
 	}
 
 	@PreAuthorize("hasAuthority('role:delete')")
 	@RequestMapping("/role/update.json")
-	public ResultEntity<String> editRole(Role role) {
-		if (hasDuplicates(role)) {
+	public ResultEntity<String> editRole(@NonNull Role role) {
+		if ("".equals(role.getName())) {
+			return ResultEntity.failed(CrowdConstants.MESSAGE_STRING_INVALID);
+		} else if (this.hasDuplicates(role)) {
 			return ResultEntity.failed(CrowdConstants.MESSAGE_CHARACTER_DUPLICATED);
 		}
-		staticRoleService.editRole(role);
+		roleService.editRole(role);
 		return ResultEntity.successWithoutData();
 	}
 
 	@PreAuthorize("hasAuthority('role:delete')")
 	@RequestMapping("/role/remove/by/role/id/array.json")
 	public ResultEntity<String> removeByRoleIdArray(@RequestBody List<Integer> roleIdList) {
-		staticRoleService.removeRole(roleIdList);
+		roleService.removeRole(roleIdList);
 		return ResultEntity.successWithoutData();
 	}
 }
