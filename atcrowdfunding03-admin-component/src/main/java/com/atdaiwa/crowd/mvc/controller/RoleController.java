@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.atdaiwa.crowd.constant.CrowdConstants;
-
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +16,7 @@ import com.atdaiwa.crowd.service.api.RoleService;
 import com.atdaiwa.crowd.util.ResultEntity;
 import com.github.pagehelper.PageInfo;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 /**
@@ -27,8 +27,22 @@ import javax.annotation.Resource;
 @RestController
 public class RoleController {
 
+	private static RoleService staticRoleService;
+
 	@Resource
 	private RoleService roleService;
+
+	@PostConstruct
+	private void initStaticService() {
+		staticRoleService = roleService;
+	}
+
+	private static boolean hasDuplicates(@NonNull Role role) {
+		List<Role> rolesList = staticRoleService.getAll();
+		List<String> roleList = new ArrayList<>();
+		rolesList.forEach(roles -> roleList.add(roles.getName()));
+		return roleList.contains(role.getName());
+	}
 
 	@PreAuthorize("hasAuthority('role:get')")
 	@RequestMapping("/role/get/page/info.json")
@@ -45,12 +59,9 @@ public class RoleController {
 	@PreAuthorize("hasAuthority('role:add')")
 	@RequestMapping("/role/save.json")
 	public ResultEntity<String> saveRole(@NonNull Role role) {
-		List<Role> roleList = roleService.getAll();
-		List<String> roleNameLists = new ArrayList<>();
-		roleList.forEach(roleName -> roleNameLists.add(roleName.getName()));
 		if ("".equals(role.getName())) {
 			return ResultEntity.failed(CrowdConstants.MESSAGE_STRING_INVALID);
-		} else if (roleNameLists.contains(role.getName())) {
+		} else if (hasDuplicates(role)) {
 			return ResultEntity.failed(CrowdConstants.MESSAGE_CHARACTER_DUPLICATED);
 		}
 		roleService.saveRole(role);
@@ -60,10 +71,7 @@ public class RoleController {
 	@PreAuthorize("hasAuthority('role:delete')")
 	@RequestMapping("/role/update.json")
 	public ResultEntity<String> editRole(Role role) {
-		List<Role> roleList = roleService.getAll();
-		List<String> roleNameLists = new ArrayList<>();
-		roleList.forEach(roleName -> roleNameLists.add(roleName.getName()));
-		if (roleNameLists.contains(role.getName())) {
+		if (hasDuplicates(role)) {
 			return ResultEntity.failed(CrowdConstants.MESSAGE_CHARACTER_DUPLICATED);
 		}
 		roleService.editRole(role);

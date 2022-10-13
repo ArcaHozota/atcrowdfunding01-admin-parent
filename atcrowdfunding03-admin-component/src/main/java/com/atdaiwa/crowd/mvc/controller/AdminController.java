@@ -14,6 +14,7 @@ import com.github.pagehelper.PageInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 /**
@@ -24,8 +25,22 @@ import javax.annotation.Resource;
 @RestController
 public class AdminController {
 
+	private static AdminService staticAdminService;
+
 	@Resource
 	private AdminService adminService;
+
+	@PostConstruct
+	private void initStaticService(){
+		staticAdminService = adminService;
+	}
+
+	private static boolean hasDulpicates(@NonNull Admin admin){
+		List<Admin> adminList = staticAdminService.getAll();
+		List<String> acctLists = new ArrayList<>();
+		adminList.forEach(admins -> acctLists.add(admins.getLoginAccount()));
+		return acctLists.contains(admin.getLoginAccount());
+	}
 
 	@PreAuthorize("hasAuthority('user:get')")
 	@RequestMapping("/admin/get/page/info.json")
@@ -48,12 +63,9 @@ public class AdminController {
 	@PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
 	@RequestMapping("/admin/save.json")
 	public ResultEntity<String> save(@NonNull Admin admin) {
-		List<Admin> adminList = adminService.getAll();
-		List<String> acctLists = new ArrayList<>();
-		adminList.forEach(admins -> acctLists.add(admins.getLoginAccount()));
 		if ("".equals(admin.getLoginAccount()) || "".equals(admin.getUserPassword())) {
 			return ResultEntity.failed(CrowdConstants.MESSAGE_STRING_INVALID);
-		} else if (acctLists.contains(admin.getLoginAccount())) {
+		} else if (hasDulpicates(admin)) {
 			return ResultEntity.failed(CrowdConstants.MESSAGE_ACCOUNT_DUPLICATED);
 		}
 		// 1.執行保存；
@@ -65,10 +77,7 @@ public class AdminController {
 	@PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
 	@RequestMapping("/admin/update.json")
 	public ResultEntity<String> update(Admin admin) {
-		List<Admin> adminList = adminService.getAll();
-		List<String> acctLists = new ArrayList<>();
-		adminList.forEach(admins -> acctLists.add(admins.getLoginAccount()));
-		if (acctLists.contains(admin.getLoginAccount())) {
+		if (hasDulpicates(admin)) {
 			return ResultEntity.failed(CrowdConstants.MESSAGE_ACCOUNT_DUPLICATED);
 		}
 		// 1.執行更新；
