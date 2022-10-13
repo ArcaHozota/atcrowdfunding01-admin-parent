@@ -31,20 +31,20 @@
 		<div class="container">
 			<div class="navbar-header">
 				<div>
-					<a class="navbar-brand" href="index.html" style="font-size: 32px;">尚籌網-創意產品眾籌平台</a>
+					<a class="navbar-brand" href="index.html" style="font-size: 32px;">ヤマクラウド</a>
 				</div>
 			</div>
 		</div>
 	</nav>
 	<div class="container" style="text-align: center;">
 		<h2 class="form-signin-heading">
-			<i class="glyphicon glyphicon-log-in"></i>尚籌網系統消息
+			<i class="glyphicon glyphicon-log-in"></i>ヤマクラウドポップアップ
 		</h2>
 
 		<h3>${requestScope.exception.message}</h3>
 
 		<button style="width: 150px; margin: 50px auto 0px auto;"
-			class="btn btn-lg btn-warning btn-block">點我返回上一步</button>
+			class="btn btn-lg btn-warning btn-block">ロールバック</button>
 	</div>
 </body>
 </html>

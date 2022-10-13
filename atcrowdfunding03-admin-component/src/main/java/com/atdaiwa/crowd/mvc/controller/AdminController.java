@@ -32,7 +32,7 @@ public class AdminController {
 
 	@PostConstruct
 	private void initStaticService(){
-		staticAdminService = adminService;
+		staticAdminService = this.adminService;
 	}
 
 	private static boolean hasDulpicates(@NonNull Admin admin){
@@ -48,7 +48,7 @@ public class AdminController {
 			@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
 			@RequestParam(value = "pageSize", defaultValue = "7") Integer pageSize) {
 		// 1.調用Service方法獲取分頁數據；
-		PageInfo<Admin> pageInfo = adminService.getPageInfo(keyword, pageNum, pageSize);
+		PageInfo<Admin> pageInfo = staticAdminService.getPageInfo(keyword, pageNum, pageSize);
 		// 2.成功則返回JSON數據，失敗則會通過框架的異常處理機制；
 		return ResultEntity.successWithData(pageInfo);
 	}
@@ -56,11 +56,11 @@ public class AdminController {
 	@PreAuthorize("hasAuthority('user:delete')")
 	@RequestMapping("/admin/remove/by/role/id/array.json")
 	public ResultEntity<String> removeByAdminIdArray(@RequestBody List<Integer> adminIdList) {
-		adminService.remove(adminIdList);
+		staticAdminService.remove(adminIdList);
 		return ResultEntity.successWithoutData();
 	}
 
-	@PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
+	@PreAuthorize("hasAnyRole('会長','代表取締役社長')")
 	@RequestMapping("/admin/save.json")
 	public ResultEntity<String> save(@NonNull Admin admin) {
 		if ("".equals(admin.getLoginAccount()) || "".equals(admin.getUserPassword())) {
@@ -69,19 +69,19 @@ public class AdminController {
 			return ResultEntity.failed(CrowdConstants.MESSAGE_ACCOUNT_DUPLICATED);
 		}
 		// 1.執行保存；
-		adminService.saveAdmin(admin);
+		staticAdminService.save(admin);
 		// 2.頁面跳轉；
 		return ResultEntity.successWithoutData();
 	}
 
-	@PreAuthorize("hasAnyRole('社長/本店長','代表取締役社長')")
+	@PreAuthorize("hasAnyRole('会長','代表取締役社長')")
 	@RequestMapping("/admin/update.json")
 	public ResultEntity<String> update(Admin admin) {
 		if (hasDulpicates(admin)) {
 			return ResultEntity.failed(CrowdConstants.MESSAGE_ACCOUNT_DUPLICATED);
 		}
 		// 1.執行更新；
-		adminService.update(admin);
+		staticAdminService.update(admin);
 		// 2.頁面跳轉；
 		return ResultEntity.successWithoutData();
 	}

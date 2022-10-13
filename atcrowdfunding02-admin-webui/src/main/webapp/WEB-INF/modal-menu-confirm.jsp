@@ -8,14 +8,14 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title">尚籌網系統彈窗</h4>
+				<h4 class="modal-title">ヤマクラウドポップアップ</h4>
 			</div>
 			<form>
 				<div class="modal-body">
-					您真的準備刪除<span id="removeNodeSpan"></span>這個節點嗎？
+					このノド<span id="removeNodeSpan"></span>を削除するとよろしいでしょうか。
 				</div>
 				<div class="modal-footer">
-					<button id="confirmBtn" type="button" class="btn btn-warning"><i class="glyphicon glyphicon-ok"></i>OK</button>
+					<button id="confirmBtn" type="button" class="btn btn-warning"><i class="glyphicon glyphicon-ok"></i>Okay</button>
 				</div>
 			</form>
 		</div>

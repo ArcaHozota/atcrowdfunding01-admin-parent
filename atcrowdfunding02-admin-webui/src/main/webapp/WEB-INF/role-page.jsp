@@ -217,9 +217,9 @@
 				"success" : function(response) {
 					var result = response.result;
 					if (result == "SUCCESS") {
-						layer.msg("操作成功！");
+						layer.msg("Succeeded！");
 					} else {
-						layer.msg("操作失敗！" + response.message);
+						layer.msg("Failed！" + response.message);
 					}
 				},
 				"error" : function(response) {
@@ -240,29 +240,29 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h3 class="panel-title">
-							<i class="glyphicon glyphicon-th"></i>數據列表
+							<i class="glyphicon glyphicon-th"></i>データ一覧
 						</h3>
 					</div>
 					<div class="panel-body">
 						<form class="form-inline" role="form" style="float: left;">
 							<div class="form-group has-feedback">
 								<div class="input-group">
-									<div class="input-group-addon">檢索條件</div>
+									<div class="input-group-addon">検索条件</div>
 									<input id="keywordInput" class="form-control has-success"
 										type="text" placeholder="請輸入檢索條件">
 								</div>
 							</div>
 							<button id="searchBtn" type="button" class="btn btn-info">
-								<i class="glyphicon glyphicon-search"></i>檢索
+								<i class="glyphicon glyphicon-search"></i>検索
 							</button>
 						</form>
 						<button id="batchRemoveBtn" type="button" class="btn btn-danger"
 							style="float: right; margin-left: 10px;">
-							<i class=" glyphicon glyphicon-remove"></i>刪除
+							<i class=" glyphicon glyphicon-remove"></i>削除
 						</button>
 						<button type="button" id="showAddModalBtn" class="btn btn-success"
 							style="float: right;">
-							<i class="glyphicon glyphicon-plus"></i>新增
+							<i class="glyphicon glyphicon-plus"></i>追加
 						</button>
 						<br>
 						<hr style="clear: both;">

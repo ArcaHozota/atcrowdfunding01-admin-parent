@@ -53,7 +53,7 @@ public class CrowdTest {
 	@Test
 	public void testTx() {
 		Admin admin = new Admin(null, "Jerry", "1234", "Jerry Magderlle", "jerry@qq.com", null);
-		adminService.saveAdmin(admin);
+		adminService.save(admin);
 	}
 
 	@Test

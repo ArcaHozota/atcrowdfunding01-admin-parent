@@ -159,7 +159,7 @@
 
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<i class="glyphicon glyphicon-th-list"></i>權限菜單列表
+						<i class="glyphicon glyphicon-th-list"></i>権限一覧
 						<div style="float: right; cursor: pointer;" data-toggle="modal"
 							data-target="#myModal">
 							<i class="glyphicon glyphicon-question-sign"></i>

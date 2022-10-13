@@ -22,30 +22,30 @@
 		<div class="container">
 			<div class="navbar-header">
 				<div>
-					<a class="navbar-brand" href="index.html" style="font-size: 32px;">尚籌網-創意產品眾籌平台</a>
+					<a class="navbar-brand" href="index.html" style="font-size: 32px;">ヤマクラウド</a>
 				</div>
 			</div>
 		</div>
 	</nav>
 	<div class="container">
-		<form action="spsecurity/do/login.html" method="post" class="form-signin"
-			role="form">
+		<form action="spsecurity/do/login.html" method="post"
+			class="form-signin" role="form">
 			<h2 class="form-signin-heading">
-				<i class="glyphicon glyphicon-log-in"></i>管理員登錄
+				<i class="glyphicon glyphicon-log-in"></i>管理者ログイン画面
 			</h2>
 			<p>${SPRING_SECURITY_LAST_EXCEPTION.message}</p>
 			<p>${requestScope.exception.message}</p>
 			<div class="form-group has-success has-feedback">
 				<input type="text" name="loginAccount" class="form-control"
-					id="inputSuccess4" placeholder="請輸入賬號" autofocus> <span
+					id="inputSuccess4" placeholder="ログインアカウント" autofocus> <span
 					class="glyphicon glyphicon-user form-control-feedback"></span>
 			</div>
 			<div class="form-group has-success has-feedback">
 				<input type="text" name="userPassword" class="form-control"
-					id="inputSuccess4" placeholder="請輸入密碼" style="margin-top: 10px;">
+					id="inputSuccess4" placeholder="パスワード" style="margin-top: 10px;">
 				<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 			</div>
-			<button type="submit" class="btn btn-lg btn-success btn-block">登錄</button>
+			<button type="submit" class="btn btn-lg btn-success btn-block">ログイン</button>
 		</form>
 	</div>
 </body>
